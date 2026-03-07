@@ -12,12 +12,18 @@ import Divider from '../components/Divider.astro';
         <div class="text-center">
 
           <div class="about-avatar">
-            <img src="/favicon.svg" alt="张睿豪" />
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="朱印：豪">
+              <path d="M15,12 Q50,5 85,12 Q95,50 88,88 Q50,95 12,88 Q5,50 15,12 Z"
+                fill="var(--color-seal)" filter="url(#seal-roughness)" opacity="0.92" />
+              <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+                font-size="42" fill="rgba(255,255,255,0.92)" filter="url(#text-erosion)"
+                class="seal-text select-none">豪</text>
+            </svg>
           </div>
 
           <div class="about-names">
             <div class="about-name-primary">张睿豪</div>
-            <div class="about-name-secondary">Ruihao (Ray) Zhang</div>
+            <div class="about-name-secondary" style="font-family:var(--font-name-en); font-size:1.35rem; letter-spacing:0.02em;">Ruihao (Ray) Zhang</div>
           </div>
 
           <p class="about-slogan">Systems, Data, Code, and Ideas</p>
