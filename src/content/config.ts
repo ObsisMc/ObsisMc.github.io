@@ -8,8 +8,7 @@ const blog = defineCollection({
     tags: z.array(z.string()).optional().default([]),
     excerpt: z.string().optional(),
     path_name: z.string().optional(),
-    // Hexo legacy fields — ignored but present in migrated posts
-    categories: z.any().optional(),
+    categories: z.array(z.string()).optional().default([]),
     tag: z.any().optional(),
   }),
 });

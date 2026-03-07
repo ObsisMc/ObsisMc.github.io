@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Divider from '../../components/Divider.astro';
+
+const posts = (await getCollection('blog')).filter(p => p.id.startsWith('zh/'));
+
+const catCount: Record<string, number> = {};
+for (const post of posts) {
+  for (const cat of (post.data.categories || [])) {
+    catCount[cat] = (catCount[cat] || 0) + 1;
+  }
+}
+const categories = Object.entries(catCount).sort((a, b) => b[1] - a[1]);
+---
+<Base title="分类" lang="zh" altHref="/en/categories">
+  <Header lang="zh" />
+  <main class="section-divider">
+    <section class="section-shell">
+      <header class="section-header">
+        <h1 class="section-title">分类</h1>
+        <Divider />
+      </header>
+      {categories.length > 0 ? (
+        <div class="text-center mt-12 mb-16">
+          <div class="flex flex-wrap justify-center gap-3">
+            {categories.map(([cat, count]) => (
+              <a href={`/categories/${encodeURIComponent(cat)}`} class="tag-pill">
+                <svg class="w-3.5 h-3.5 mr-1.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+                {cat}
+                <span class="text-slate-400 ml-1 text-xs">({count})</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <p class="text-center text-slate-400 mt-12">暂无分类。</p>
+      )}
+    </section>
+  </main>
+  <Footer />
+</Base>

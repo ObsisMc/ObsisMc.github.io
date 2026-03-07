@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Divider from '../../components/Divider.astro';
+import { getPostSlug } from '../../utils/slug';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter(p => p.id.startsWith('zh/'));
+  const catSet = new Set<string>();
+  for (const post of posts) {
+    for (const cat of (post.data.categories || [])) catSet.add(cat);
+  }
+  return Array.from(catSet).map(category => ({
+    params: { category },
+    props: {
+      category,
+      posts: posts
+        .filter(p => p.data.categories?.includes(category))
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+<Base title={`分类：${category}`} lang="zh" altHref={`/en/categories/${encodeURIComponent(category)}`}>
+  <Header lang="zh" />
+  <main class="section-divider">
+    <section class="section-shell">
+      <header class="section-header">
+        <h1 class="section-title">分类：{category}</h1>
+        <Divider />
+      </header>
+      <div style="max-width:42rem; margin:0 auto;">
+        {posts.map((post: any) => (
+          <article class="archive-item group" style="padding:0.4rem 0;">
+            <time datetime={post.data.date.toISOString().slice(0,10)} class="archive-date">
+              {post.data.date.toISOString().slice(0,10).replace(/-/g,'/')}
+            </time>
+            <h3 style="font-size:1rem; font-weight:400; margin:0;">
+              <a href={`/blog/${getPostSlug(post)}`} class="archive-title link-underline">
+                {post.data.title}
+              </a>
+            </h3>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
