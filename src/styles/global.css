@@ -307,14 +307,108 @@
         --tw-prose-td-borders: #e2e8f0;
     }
 
-    .prose-shiro code {
-        padding-inline: 0.25em;
+    /* headings */
+    .prose-shiro h1, .prose-shiro h2, .prose-shiro h3,
+    .prose-shiro h4, .prose-shiro h5, .prose-shiro h6 {
+        color: var(--color-ink);
+        font-weight: 700;
+        line-height: 1.35;
+        margin-top: 2em;
+        margin-bottom: 0.75em;
+    }
+    .prose-shiro h1 { font-size: 1.875rem; }
+    .prose-shiro h2 { font-size: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.4em; }
+    .prose-shiro h3 { font-size: 1.25rem; }
+    .prose-shiro h4 { font-size: 1.1rem; }
+
+    /* paragraphs & lists */
+    .prose-shiro p { margin-top: 1.25em; margin-bottom: 1.25em; color: #1e293b; }
+    .prose-shiro ul { list-style: disc; padding-left: 1.75em; margin: 1.25em 0; }
+    .prose-shiro ol { list-style: decimal; padding-left: 1.75em; margin: 1.25em 0; }
+    .prose-shiro li { margin: 0.4em 0; color: #1e293b; }
+    .prose-shiro li::marker { color: #cbd5e1; }
+
+    /* links */
+    .prose-shiro a { color: #1e293b; text-underline-offset: 4px; text-decoration: underline; text-decoration-color: #cbd5e1; }
+    .prose-shiro a:hover { color: var(--color-seal); text-decoration-color: var(--color-seal); }
+
+    /* blockquote */
+    .prose-shiro blockquote {
+        border-left: 4px solid #cbd5e1;
+        padding: 0.5em 1.25em;
+        margin: 1.5em 0;
+        color: #475569;
+        font-style: italic;
+        background: #f8fafc;
+        border-radius: 0 0.5rem 0.5rem 0;
+    }
+    .prose-shiro blockquote p { margin: 0; }
+
+    /* hr */
+    .prose-shiro hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+
+    /* code inline */
+    .prose-shiro :not(pre) > code {
+        font-family: var(--font-code);
+        font-size: 0.875em;
+        color: var(--color-seal);
+        background: #f1f5f9;
+        border-radius: 0.25em;
+        padding: 0.15em 0.4em;
     }
     .prose-shiro code::before,
     .prose-shiro code::after { content: ""; }
 
-    .prose-shiro img { border-radius: 0.5rem; }
-    .prose-shiro a { text-underline-offset: 4px; }
+    /* code blocks (Shiki) */
+    .prose-shiro pre {
+        margin: 1.5em 0;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        font-family: var(--font-code);
+        font-size: 0.875em;
+        line-height: 1.7;
+        padding: 1.25em 1.5em;
+    }
+    .prose-shiro pre code {
+        background: none;
+        color: inherit;
+        font-size: inherit;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    /* tables */
+    .prose-shiro table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5em 0;
+        font-size: 0.9em;
+        overflow-x: auto;
+        display: block;
+    }
+    .prose-shiro thead { background: #f8fafc; }
+    .prose-shiro th {
+        padding: 0.6em 1em;
+        text-align: left;
+        font-weight: 600;
+        color: var(--color-ink);
+        border-bottom: 2px solid #cbd5e1;
+        border-right: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+    .prose-shiro th:last-child { border-right: none; }
+    .prose-shiro td {
+        padding: 0.6em 1em;
+        border-bottom: 1px solid #e2e8f0;
+        border-right: 1px solid #e2e8f0;
+        color: #334155;
+        vertical-align: top;
+    }
+    .prose-shiro td:last-child { border-right: none; }
+    .prose-shiro tbody tr:last-child td { border-bottom: none; }
+    .prose-shiro tbody tr:hover { background: #f8fafc; }
+
+    .prose-shiro img { border-radius: 0.5rem; max-width: 100%; }
 
     .text-footnote { font-size: 0.7rem; }
     .tracking-note { letter-spacing: 0.2em; }

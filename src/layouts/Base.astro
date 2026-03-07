@@ -19,7 +19,13 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
   <title>{title ? `${title} | ${siteTitle}` : siteTitle}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   {isPost && (
-    <style>.prose-shiro { max-width: 85ch !important; }</style>
+    <>
+      <style>.prose-shiro { max-width: 85ch !important; }</style>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" />
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+    </>
   )}
 </head>
 <body class="h-full fog-bg text-slate-800">
