@@ -123,6 +123,57 @@ const slug = getPostSlug(post);
 </Base>
 
 <script>
+  // LightGallery image viewer
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.prose-shiro');
+    if (!containers.length || typeof (window as any).lightGallery !== 'function') return;
+    const zoomPlugin = (window as any).lgZoom || (window as any).LgZoom || null;
+    let activeLgInstance: any = null;
+
+    const escapeHtml = (v: string) => v.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    const getCaption = (img: HTMLImageElement) => img.getAttribute('title') || img.getAttribute('alt') || '';
+    const ensureLink = (container: Element, img: HTMLImageElement) => {
+      const src = img.currentSrc || img.src;
+      if (!src) return null;
+      const existing = img.closest('a');
+      const link: HTMLAnchorElement = existing && container.contains(existing) ? existing as HTMLAnchorElement : document.createElement('a');
+      if (!link.contains(img)) { img.parentNode!.insertBefore(link, img); link.appendChild(img); }
+      link.setAttribute('href', src);
+      link.setAttribute('data-lg-item', 'true');
+      const cap = getCaption(img);
+      if (cap) link.setAttribute('data-sub-html', `<p>${escapeHtml(cap)}</p>`);
+      else link.removeAttribute('data-sub-html');
+      return link;
+    };
+
+    containers.forEach((container) => {
+      const images = container.querySelectorAll('img');
+      if (!images.length) return;
+      images.forEach((img) => ensureLink(container, img as HTMLImageElement));
+      const instance = (window as any).lightGallery(container, {
+        selector: 'a[data-lg-item]',
+        download: false,
+        plugins: zoomPlugin ? [zoomPlugin] : [],
+        zoom: Boolean(zoomPlugin),
+        actualSize: false,
+        showZoomInOutIcons: Boolean(zoomPlugin),
+      });
+      container.addEventListener('lgAfterOpen', (e: any) => { activeLgInstance = e.detail?.instance || instance; });
+      container.addEventListener('lgAfterClose', () => { activeLgInstance = null; });
+    });
+
+    document.addEventListener('wheel', (e) => {
+      if (!activeLgInstance) return;
+      const t = e.target as Element;
+      if (!t.closest('.lg-outer')) return;
+      e.preventDefault();
+      const zoom = activeLgInstance.plugins?.zoom;
+      if (zoom?.zoomIn && zoom?.zoomOut) { e.deltaY < 0 ? zoom.zoomIn() : zoom.zoomOut(); return; }
+      const btn = document.querySelector(e.deltaY < 0 ? '.lg-zoom-in' : '.lg-zoom-out');
+      btn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    }, { passive: false });
+  });
+
   const toc = document.getElementById('postToc');
   const toggle = document.getElementById('tocToggle');
   if (toc && toggle) {

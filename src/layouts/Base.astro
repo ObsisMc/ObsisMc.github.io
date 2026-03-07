@@ -22,9 +22,12 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
     <>
       <style>.prose-shiro { max-width: 85ch !important; }</style>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css" />
       <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
       <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
         onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+      <Fragment set:html={`<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/zoom/lg-zoom.min.js"></script>`} />
     </>
   )}
 </head>
@@ -98,7 +101,8 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
     const langSwitcher = document.getElementById('langSwitcher');
     const langToggleBtn = document.getElementById('langToggleBtn');
     if (langSwitcher && langToggleBtn) {
-      langToggleBtn.addEventListener('click', () => {
+      langToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const open = langSwitcher.dataset.open === 'true';
         langSwitcher.dataset.open = String(!open);
         langToggleBtn.setAttribute('aria-expanded', String(!open));
