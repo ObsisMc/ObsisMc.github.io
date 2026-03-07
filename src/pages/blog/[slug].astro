@@ -1,0 +1,145 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getPostSlug } from '../../utils/slug';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter(p => p.id.startsWith('zh/'));
+  return posts.map(post => ({
+    params: { slug: getPostSlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+
+const allPosts = (await getCollection('blog'))
+  .filter(p => p.id.startsWith('zh/'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const idx = allPosts.findIndex(p => p.id === post.id);
+const prev = idx > 0 ? allPosts[idx - 1] : null;
+const next = idx < allPosts.length - 1 ? allPosts[idx + 1] : null;
+
+// Build TOC tree (h2 + h3 only)
+const tocItems = headings.filter(h => h.depth <= 3);
+---
+<Base title={post.data.title} isPost={true}>
+  <Header />
+  <main class="section-divider">
+    <article class="content-article">
+      <header class="text-center mb-8">
+        <h1 class="page-title mb-4">{post.data.title}</h1>
+        <div class="mt-2 flex items-center justify-center gap-4 text-sm text-slate-500 mb-4">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span style="font-variant-numeric:oldstyle-nums;">{post.data.date.toISOString().slice(0,10).replace(/-/g,'/')}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="prose-shiro prose prose-slate">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="mt-8 flex flex-wrap gap-2">
+          {post.data.tags.map((tag: string) => (
+            <a href={`/tags/${encodeURIComponent(tag)}`} class="tag-pill">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-2" style="display:inline-block;"></span>
+              {tag}
+            </a>
+          ))}
+        </div>
+      )}
+
+      <!-- Post navigation -->
+      <div class="mt-12 pt-8 border-t border-slate-200/70 flex justify-between items-center text-sm md:text-base">
+        {prev ? (
+          <a href={`/blog/${getPostSlug(prev)}`} class="post-nav-link group text-left">
+            <span aria-hidden="true">&larr;</span>
+            <span class="post-nav-title">{prev.data.title}</span>
+          </a>
+        ) : <div></div>}
+        {next ? (
+          <a href={`/blog/${getPostSlug(next)}`} class="post-nav-link group text-right">
+            <span class="post-nav-title">{next.data.title}</span>
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        ) : <div></div>}
+      </div>
+    </article>
+  </main>
+  <Footer />
+
+  <!-- Floating TOC (desktop ≥1200px) -->
+  {tocItems.length > 0 && (
+    <aside class="post-toc-float" aria-label="目录">
+      <div class="post-toc" data-collapsed="true" data-pinned="false" id="postToc">
+        <button class="post-toc-toggle" type="button" aria-expanded="false" id="tocToggle">
+          <span class="post-toc-bookmark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M7.25 6.5a1 1 0 1 1-2 0a1 1 0 0 1 2 0zm0 5a1 1 0 1 1-2 0a1 1 0 0 1 2 0zm0 5a1 1 0 1 1-2 0a1 1 0 0 1 2 0zM10 6.5h9M10 11.5h9M10 16.5h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+            </svg>
+          </span>
+          <span class="post-toc-title">目录</span>
+          <span class="post-toc-toggle-icon" aria-hidden="true"></span>
+        </button>
+        <div class="post-toc-body">
+          <ul class="toc">
+            {tocItems.map(h => (
+              <li class:list={['toc-item', h.depth === 3 ? 'toc-child' : '']}>
+                <a href={`#${h.slug}`} class="toc-link">
+                  <span class="toc-text">{h.text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="post-toc-resize-handle post-toc-resize-handle--left" aria-hidden="true"></div>
+        <div class="post-toc-resize-handle post-toc-resize-handle--bottom" aria-hidden="true"></div>
+      </div>
+    </aside>
+  )}
+</Base>
+
+<script>
+  const toc = document.getElementById('postToc');
+  const toggle = document.getElementById('tocToggle');
+  if (toc && toggle) {
+    toggle.addEventListener('click', () => {
+      const collapsed = toc.dataset.collapsed === 'true';
+      toc.dataset.collapsed = String(!collapsed);
+      toggle.setAttribute('aria-expanded', String(collapsed));
+      if (collapsed) {
+        toc.dataset.pinned = 'true';
+      }
+    });
+
+    // Active link on scroll
+    const links = toc.querySelectorAll('.toc-link');
+    const headingEls = Array.from(links).map(l => {
+      const id = (l as HTMLAnchorElement).href.split('#')[1];
+      return document.getElementById(id);
+    }).filter(Boolean) as HTMLElement[];
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('is-active'));
+          const id = entry.target.id;
+          const active = toc.querySelector(`.toc-link[href="#${id}"]`);
+          active?.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -80% 0px' });
+
+    headingEls.forEach(el => observer.observe(el));
+  }
+</script>

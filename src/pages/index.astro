@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Divider from '../components/Divider.astro';
+import { getPostSlug } from '../utils/slug';
+
+const posts = (await getCollection('blog'))
+  .filter(p => p.id.startsWith('zh/'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+function getExcerpt(post: any) {
+  if (post.data.excerpt) return post.data.excerpt;
+  const text = post.body
+    .replace(/^---[\s\S]*?---/, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[#*`>_~]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.slice(0, 200) + (text.length > 200 ? '...' : '');
+}
+---
+<Base>
+  <Header />
+  <main class="section-divider">
+    <div id="dividerSentinel" style="height:1px;margin-top:-1px;pointer-events:none;" aria-hidden="true"></div>
+    {posts.map((post, i) => (
+      <>
+        <article class="content-article">
+          <header class="text-center mb-4">
+            <h2 class="card-title">
+              <a href={`/blog/${getPostSlug(post)}`} style="text-decoration:none; color:inherit;">{post.data.title}</a>
+            </h2>
+            <!-- Meta: date -->
+            <div class="mt-2 flex items-center justify-center gap-4 text-sm text-slate-500">
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span style="font-variant-numeric:oldstyle-nums;">{post.data.date.toISOString().slice(0,10).replace(/-/g,'/')}</span>
+              </div>
+            </div>
+          </header>
+          <div class="prose-shiro prose prose-slate">
+            <p>{getExcerpt(post)}</p>
+          </div>
+          <div class="mt-6 text-center">
+            <a href={`/blog/${getPostSlug(post)}`} class="btn-ink">阅读全文</a>
+          </div>
+        </article>
+        {i < posts.length - 1 && <Divider class="my-8" />}
+      </>
+    ))}
+  </main>
+  <Footer />
+</Base>

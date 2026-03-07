@@ -1,0 +1,126 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  isPost?: boolean;
+}
+const { title, isPost = false } = Astro.props;
+const siteTitle = '白夜書簡';
+---
+<!doctype html>
+<html lang="zh-CN" class="h-full scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title ? `${title} | ${siteTitle}` : siteTitle}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  {isPost && (
+    <style>.prose-shiro { max-width: 85ch !important; }</style>
+  )}
+</head>
+<body class="h-full fog-bg text-slate-800">
+
+  <!-- SVG filters for seal roughness / text erosion -->
+  <svg width="0" height="0" class="absolute pointer-events-none" aria-hidden="true">
+    <defs>
+      <filter id="seal-roughness" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+      </filter>
+      <filter id="text-erosion">
+        <feTurbulence type="fractalNoise" baseFrequency="0.15" numOctaves="1" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" />
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="min-h-full px-4 pt-14 pb-6 md:pb-5">
+
+    <!-- Paper Card -->
+    <div class="paper mx-auto w-full max-w-4xl rounded-2xl px-5 sm:px-8 md:px-12 lg:px-14 pt-10 pb-6 md:pt-12 md:pb-8">
+      <slot />
+    </div>
+
+    <!-- Lang Switcher (fixed top-right) -->
+    <div id="langSwitcher" class="lang-switcher" data-open="false">
+      <button id="langToggleBtn" class="lang-toggle-btn" type="button"
+        aria-label="Switch language" aria-haspopup="listbox" aria-expanded="false">
+        <span id="langToggleLabel">ZH</span>
+        <span class="lang-toggle-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="lang-dropdown" role="listbox" aria-label="Select language">
+        <button class="lang-option" data-lang="zh" data-active="true" role="option">中文</button>
+        <button class="lang-option" data-lang="en" data-active="false" role="option">English</button>
+      </div>
+    </div>
+
+    <!-- To-top button -->
+    <button id="toTopBtn" class="to-top-btn" type="button" aria-label="回到顶部">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 5l-6 6 1.4 1.4L12 7.8l4.6 4.6L18 11zM12 11l-6 6 1.4 1.4L12 13.8l4.6 4.6L18 17z"/>
+      </svg>
+    </button>
+
+    <!-- Tagline note -->
+    <div class="mt-4 text-center">
+      <p class="text-footnote tracking-note text-slate-400/70 font-light select-none"
+         style="font-family:var(--font-title);">
+        白は、余白の名。
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // To-top button
+    const toTopBtn = document.getElementById('toTopBtn');
+    if (toTopBtn) {
+      window.addEventListener('scroll', () => {
+        toTopBtn.classList.toggle('is-visible', window.scrollY > 300);
+      }, { passive: true });
+      toTopBtn.addEventListener('click', () =>
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      );
+    }
+
+    // Lang switcher
+    const langSwitcher = document.getElementById('langSwitcher');
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    if (langSwitcher && langToggleBtn) {
+      langToggleBtn.addEventListener('click', () => {
+        const open = langSwitcher.dataset.open === 'true';
+        langSwitcher.dataset.open = String(!open);
+        langToggleBtn.setAttribute('aria-expanded', String(!open));
+      });
+      document.addEventListener('click', (e) => {
+        if (!langSwitcher.contains(e.target as Node)) {
+          langSwitcher.dataset.open = 'false';
+          langToggleBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      // Lang option clicks (Phase 3 will wire real URLs)
+      langSwitcher.querySelectorAll('.lang-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = (btn as HTMLElement).dataset.lang;
+          if (lang === 'en') window.location.href = '/en/';
+          else window.location.href = '/';
+          langSwitcher.dataset.open = 'false';
+        });
+      });
+    }
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        const open = mobileMenu.dataset.open === 'true';
+        mobileMenu.dataset.open = String(!open);
+        menuBtn.setAttribute('aria-expanded', String(!open));
+        const chevron = menuBtn.querySelector('#menuChevron') as SVGElement | null;
+        if (chevron) chevron.style.transform = open ? '' : 'rotate(180deg)';
+      });
+    }
+  </script>
+</body>
+</html>

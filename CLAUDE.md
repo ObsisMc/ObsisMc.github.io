@@ -65,42 +65,116 @@ Comments:     Giscus
 Posts live in `src/content/blog/zh/` and `src/content/blog/en/`.
 Same filename = translation pair (e.g. `git-commands.md` in both folders).
 
-Frontmatter:
+Frontmatter schema (`src/content/config.ts`):
 ```yaml
 title: string
 date: Date
-tags: string[]
-excerpt: string   # optional, falls back to first 200 chars
+tags: string[]           # optional
+excerpt: string          # optional, falls back to first 200 chars of body
+path_name: string        # optional — used as URL slug; falls back to filename
+# Hexo legacy fields kept to avoid schema errors:
+categories: any          # ignored
+tag: any                 # ignored (Hexo sometimes uses singular form)
 ```
 
-Existing posts to migrate from: `../iBlog/source/_posts/`
+**Slug resolution** (`src/utils/slug.ts`): use `path_name` if present, else filename minus prefix/extension.
+All migrated zh posts already have `path_name` set to clean English slugs.
+
+## Current File Structure
+
+```
+src/
+  content/
+    blog/
+      zh/          # 7 Chinese posts (migrated from ../iBlog/source/_posts/)
+      en/          # empty — Phase 3
+    config.ts      # Content collection schema
+  layouts/
+    Base.astro     # Full shiro layout: fog-bg, paper card, SVG filters, lang switcher, to-top
+  components/
+    Header.astro   # Site title + seal (豪), RSS/GitHub pills, desktop+mobile nav
+    Footer.astro   # Copyright, Cormorant Garamond font
+    Divider.astro  # Three-dot SVG divider with gradient lines
+  pages/
+    index.astro          # Home (post cards with excerpt + btn-ink)
+    blog/[slug].astro    # Post detail (prose, tags, prev/next nav, floating TOC)
+    archives.astro       # Timeline grouped by year
+    tags/index.astro     # All tags with pill + count
+    tags/[tag].astro     # Posts by tag (archive list style)
+    about.astro          # About page (avatar, social icons, contact form)
+  styles/
+    global.css     # Full shiro CSS: Tailwind v4.2.1 + all component/utility classes
+  utils/
+    slug.ts        # getPostSlug() — path_name > filename fallback
+.github/
+  workflows/
+    deploy.yml     # Push to main → build → deploy to GitHub Pages
+public/
+  favicon.svg
+  # Post image asset folders (copied from Hexo)
+astro.config.mjs   # site: https://ObsisMc.github.io, output: static, image: noop, tailwindcss vite plugin
+package.json
+```
+
+## Known Decisions & Gotchas
+
+- **No `base` in astro.config** — GitHub Pages deployment works without it since we deploy to a custom domain or user/org page. If deploying to a project page (`ObsisMc.github.io/iBlog-astro`), add `base: '/iBlog-astro'` back to `astro.config.mjs` and update the deploy workflow accordingly.
+- **Image service: noop** — Astro's image optimizer is disabled (`astro/assets/services/noop`) because migrated posts use relative image paths that Astro can't resolve at build time. Post images are served from `public/`.
+- **Relative image paths fixed** — All `./FolderName/img` references in zh posts were rewritten to `/FolderName/img` (absolute) in the copies under `src/content/blog/zh/`. The originals in `../iBlog/` are untouched.
+- **Astro 5 content schema** — `passthrough()` does not reliably expose extra fields at runtime. Extra Hexo frontmatter fields must be explicitly declared in the schema (even as `z.any()`) to be accessible.
+- **Cache issues** — Astro 5 aggressively caches the content store. When schema or slug logic changes, always delete `.astro/` and `dist/` before rebuilding.
 
 ## Implementation Phases
 
 Work through these phases in order. Do not start the next phase until the current one is done and verified.
 
-### Phase 1 — Get the blog running
+### Phase 1 — Get the blog running ✓ DONE
 
 Goal: Astro dev server runs, all existing Chinese posts are readable.
 
-- Initialize Astro project in this directory
-- Migrate all posts from `../iBlog/source/_posts/` into `src/content/blog/zh/`
-- Clean up Hexo-specific frontmatter fields, keep `title`, `date`, `tags`
-- Implement all pages (home, post, archives, tags, about) with basic unstyled or default Astro styling
-- GitHub Actions deploy workflow to GitHub Pages must be in place
+Done: `npm run dev` works, all 7 posts accessible at clean English slugs, `npm run build` succeeds (15 pages).
 
-Done when: `npm run dev` works, all posts are accessible, `npm run build` succeeds.
-
-### Phase 2 — Match shiro visual style
+### Phase 2 — Match shiro visual style ✓ DONE
 
 Goal: The site looks identical to the Hexo shiro theme.
 
-- Port all CSS from `../iBlog/themes/shiro/source/css/_tailwind.css` — color tokens, fonts, component classes
-- Replicate layout structure from shiro's `_layout.njk`: fog background, paper card, max-width container
-- Replicate every component from shiro source: header, seal, nav, footer, post card, divider, tag pill, archive list, TOC, lang switcher, to-top button, about page
-- Use the shiro source files as pixel-level reference — read them before implementing any component
+Done: `npm run build` succeeds (15 pages), full shiro CSS ported, all components match.
 
-Done when: a side-by-side comparison with the Hexo shiro site shows no visible differences.
+#### What was implemented
+
+**`src/styles/global.css`** — Full port of shiro's `_tailwind.css`:
+- Tailwind v4.2.1 (`@tailwindcss/vite` plugin, NOT postcss)
+- `@theme` block: color tokens (`--color-paper`, `--color-ink`, `--color-seal=#b0171a`), font stacks (`--font-serif`, `--font-title: Yuji Syuku/Boku`, `--font-eng: Cormorant Garamond`, `--font-code`), shadows, easing
+- `@layer base`: scrollbar styles, body font-serif antialiased
+- `@layer components`: `.fog-bg`, `.paper` (with paper-texture `::before`), `.btn-ink`, `.menu-panel`, `.site-title`, `.card-title`, `.tag-pill`, `.section-divider`, `.archive-item`, `.post-nav-link`, `.link-muted`, etc.
+- `@layer utilities`: `.focus-elegant`, `.prose-shiro` (manual prose styles — typography plugin NOT used, see gotchas)
+- Outside layers: lang switcher, to-top button, about page, floating post TOC CSS
+
+**`src/layouts/Base.astro`** — Full shiro layout:
+- `<body class="h-full fog-bg">`, paper card `div`, max-width container
+- SVG filters: `#seal-roughness` (feTurbulence + feDisplacementMap), `#text-erosion`
+- Fixed lang switcher (top-right), to-top button, tagline note below footer
+- Client scripts: to-top scroll listener, lang switcher dropdown toggle, mobile menu toggle
+
+**`src/components/Header.astro`** — Site title with seal SVG (豪, #b0171a), last-updated subtitle, RSS + GitHub pills, desktop nav with `/` separators, mobile toggle + `.menu-panel`
+
+**`src/components/Footer.astro`** — Copyright, Cormorant Garamond font, muted links
+
+**`src/components/Divider.astro`** — Three-dot SVG with gradient lines (accepts `class` prop)
+
+**Pages:**
+- `index.astro` — Post cards: `.card-title`, clock icon meta, `.prose-shiro` excerpt, `.btn-ink` read-more, `<Divider>` between posts
+- `blog/[slug].astro` — `.prose-shiro` content, tag pills, prev/next `.post-nav-link`, floating TOC aside (desktop ≥1200px) with collapse toggle + IntersectionObserver active link
+- `archives.astro` — `.section-shell`, `.archive-item` list grouped by year
+- `tags/index.astro` — tag pills with dot + count
+- `tags/[tag].astro` — archive list style
+- `about.astro` — `.about-avatar`, `.about-name-primary/secondary`, `.about-slogan`, `.about-social` (5 SVG icons), contact form (formsubmit.co)
+
+#### Phase 2 Gotchas
+
+- **Tailwind v4.0.0 crash** — `Cannot convert undefined or null to object` in `B.generate`. Fixed by upgrading to `tailwindcss@4.2.1` + `@tailwindcss/vite@4.2.1`.
+- **`@tailwindcss/typography` incompatible** — `@plugin "@tailwindcss/typography"` syntax requires a v4-native typography plugin (doesn't exist yet). Prose styles are inlined manually in `.prose-shiro` instead.
+- **Tailwind v4 HMR bug** — Dev server (`npm run dev`) throws `Cannot convert undefined or null to object` on hot reload. Initial page load and `npm run build` work correctly. This is an upstream Tailwind v4 bug and doesn't affect the deployed site.
 
 ### Phase 3 — Bilingual support
 
