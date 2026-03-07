@@ -4,12 +4,15 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   isPost?: boolean;
+  lang?: 'zh' | 'en';
+  altHref?: string;
 }
-const { title, isPost = false } = Astro.props;
+const { title, isPost = false, lang = 'zh', altHref } = Astro.props;
 const siteTitle = '白夜書簡';
+const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
 ---
 <!doctype html>
-<html lang="zh-CN" class="h-full scroll-smooth">
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'} class="h-full scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,12 +49,14 @@ const siteTitle = '白夜書簡';
     <div id="langSwitcher" class="lang-switcher" data-open="false">
       <button id="langToggleBtn" class="lang-toggle-btn" type="button"
         aria-label="Switch language" aria-haspopup="listbox" aria-expanded="false">
-        <span id="langToggleLabel">ZH</span>
+        <span>{lang === 'zh' ? 'ZH' : 'EN'}</span>
         <span class="lang-toggle-chevron" aria-hidden="true"></span>
       </button>
       <div class="lang-dropdown" role="listbox" aria-label="Select language">
-        <button class="lang-option" data-lang="zh" data-active="true" role="option">中文</button>
-        <button class="lang-option" data-lang="en" data-active="false" role="option">English</button>
+        <a class="lang-option" data-active={lang === 'zh' ? 'true' : 'false'}
+          href={lang === 'zh' ? '#' : switchHref} role="option">中文</a>
+        <a class="lang-option" data-active={lang === 'en' ? 'true' : 'false'}
+          href={lang === 'en' ? '#' : switchHref} role="option">English</a>
       </div>
     </div>
 
@@ -97,15 +102,6 @@ const siteTitle = '白夜書簡';
           langSwitcher.dataset.open = 'false';
           langToggleBtn.setAttribute('aria-expanded', 'false');
         }
-      });
-      // Lang option clicks (Phase 3 will wire real URLs)
-      langSwitcher.querySelectorAll('.lang-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const lang = (btn as HTMLElement).dataset.lang;
-          if (lang === 'en') window.location.href = '/en/';
-          else window.location.href = '/';
-          langSwitcher.dataset.open = 'false';
-        });
       });
     }
 

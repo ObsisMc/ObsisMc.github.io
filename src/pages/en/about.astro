@@ -1,0 +1,97 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Divider from '../../components/Divider.astro';
+---
+<Base title="About" lang="en" altHref="/about">
+  <Header lang="en" />
+  <main class="section-divider">
+    <article class="content-article" style="text-align:center;">
+      <section style="max-width:48rem; margin:0 auto;">
+        <div class="text-center">
+
+          <div class="about-avatar">
+            <img src="/favicon.svg" alt="Ruihao Zhang" />
+          </div>
+
+          <div class="about-names">
+            <div class="about-name-primary">张睿豪</div>
+            <div class="about-name-secondary">Ruihao (Ray) Zhang</div>
+          </div>
+
+          <p class="about-slogan">Systems, Data, Code, and Ideas</p>
+
+          <div class="about-social">
+            <!-- GitHub -->
+            <a href="https://github.com/ObsisMc" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.78 5.45.78 11.72c0 4.85 3.14 8.96 7.5 10.42.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.05.66-3.7-1.47-3.7-1.47-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.43-.28-4.99-1.22-4.99-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .91-.29 2.98 1.12.86-.24 1.78-.36 2.7-.36.91 0 1.84.12 2.7.36 2.07-1.41 2.98-1.12 2.98-1.12.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.57 5.16-5.02 5.43.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.76.53 4.36-1.46 7.5-5.57 7.5-10.42C23.22 5.45 18.27.5 12 .5z"/></svg>
+            </a>
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/ruihao-zhang/" target="_blank" rel="noopener" class="social-icon social-linkedin" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.23 0H1.77C.79 0 0 .774 0 1.727v20.545C0 23.227.79 24 1.77 24h20.46C23.2 24 24 23.227 24 22.273V1.727C24 .774 23.2 0 22.23 0zM7.09 20.452H3.56V9h3.53v11.452zM5.32 7.433c-1.13 0-2.05-.926-2.05-2.065 0-1.14.92-2.065 2.05-2.065 1.13 0 2.05.925 2.05 2.065 0 1.139-.92 2.065-2.05 2.065zM20.45 20.452h-3.53v-5.569c0-1.328-.03-3.037-1.85-3.037-1.85 0-2.13 1.445-2.13 2.94v5.666h-3.53V9h3.39v1.561h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.22 2.35 4.22 5.41v6.33z"/></svg>
+            </a>
+            <!-- Medium -->
+            <a href="https://medium.com/@r9644360" target="_blank" rel="noopener" class="social-icon social-medium" aria-label="Medium">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><ellipse cx="8.2" cy="12" rx="3.2" ry="5.2" fill="#ffffff"/><ellipse cx="13.6" cy="12" rx="2.2" ry="4.3" fill="#ffffff"/><rect x="16.8" y="7.9" width="2" height="8.2" rx="1" fill="#ffffff"/></svg>
+            </a>
+            <!-- Substack -->
+            <a href="https://substack.com/@rayzhang675112" target="_blank" rel="noopener" class="social-icon social-substack" aria-label="Substack">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z"/></svg>
+            </a>
+            <!-- Zhihu -->
+            <a href="https://www.zhihu.com/people/0000-26-60" target="_blank" rel="noopener" class="social-icon social-zhihu" aria-label="知乎">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.721 0C2.251 0 0 2.25 0 5.719V18.28C0 21.751 2.252 24 5.721 24h12.56C21.751 24 24 21.75 24 18.281V5.72C24 2.249 21.75 0 18.281 0zm1.964 4.078c-.271.73-.5 1.434-.68 2.11h4.587c.545-.006.445 1.168.445 1.171H9.384a58.104 58.104 0 01-.112 3.797h2.712c.388.023.393 1.251.393 1.266H9.183a9.223 9.223 0 01-.408 2.102l.757-.604c.452.456 1.512 1.712 1.906 2.177.473.681.063 2.081.063 2.081l-2.794-3.382c-.653 2.518-1.845 3.607-1.845 3.607-.523.468-1.58.82-2.64.516 2.218-1.73 3.44-3.917 3.667-6.497H4.491c0-.015.197-1.243.806-1.266h2.71c.024-.32.086-3.254.086-3.797H6.598c-.136.406-.158.447-.268.753-.594 1.095-1.603 1.122-1.907 1.155.906-1.821 1.416-3.6 1.591-4.064.425-1.124 1.671-1.125 1.671-1.125zM13.078 6h6.377v11.33h-2.573l-2.184 1.373-.401-1.373h-1.219zm1.313 1.219v8.86h.623l.263.937 1.455-.938h1.456v-8.86z"/></svg>
+            </a>
+          </div>
+
+          <!-- Contact form -->
+          <section style="margin-top:5rem; max-width:28rem; margin-left:auto; margin-right:auto; text-align:left;">
+            <div class="paper" style="border-radius:1.75rem; padding:2.5rem 2.25rem;">
+              <h2 class="section-title text-center" style="font-size:1.4rem;">Contact Me</h2>
+              <p style="margin-top:0.5rem; font-size:0.875rem; color:#64748b; text-align:center;">
+                Send a message and I will get back to you by email.
+              </p>
+              <Divider class="my-6" />
+              <form class="space-y-4" action="https://formsubmit.co/f97d0a44c26199a38bf41eaec175931d" method="POST" style="display:flex; flex-direction:column; gap:1rem;">
+                <input type="hidden" name="_subject" value="New message from your Github Page blog" />
+                <input type="hidden" name="_next" id="contact-next" value="" />
+                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none;" />
+                <input type="hidden" name="_autoresponse" value="Thanks! I received your message and will reply soon." />
+                <input type="hidden" name="_captcha" value="true" />
+                <input type="hidden" name="_template" value="table" />
+                <div>
+                  <label for="contact-name" style="display:block; font-size:0.875rem; color:#475569; margin-bottom:0.25rem;">Name</label>
+                  <input id="contact-name" name="name" type="text" required
+                    style="width:100%; border-radius:0.75rem; border:1px solid #e2e8f0; background:rgba(255,255,255,0.7); padding:0.625rem 0.75rem; color:#1e293b; outline:none; font-family:inherit; font-size:0.9rem;" />
+                </div>
+                <div>
+                  <label for="contact-email" style="display:block; font-size:0.875rem; color:#475569; margin-bottom:0.25rem;">Email</label>
+                  <input id="contact-email" name="email" type="email" required
+                    style="width:100%; border-radius:0.75rem; border:1px solid #e2e8f0; background:rgba(255,255,255,0.7); padding:0.625rem 0.75rem; color:#1e293b; outline:none; font-family:inherit; font-size:0.9rem;" />
+                </div>
+                <div>
+                  <label for="contact-message" style="display:block; font-size:0.875rem; color:#475569; margin-bottom:0.25rem;">Message</label>
+                  <textarea id="contact-message" name="message" rows="5" required
+                    style="width:100%; border-radius:0.75rem; border:1px solid #e2e8f0; background:rgba(255,255,255,0.7); padding:0.625rem 0.75rem; color:#1e293b; outline:none; resize:vertical; font-family:inherit; font-size:0.9rem;"></textarea>
+                </div>
+                <div style="padding-top:0.5rem; text-align:center;">
+                  <button type="submit" class="btn-ink">Send Message</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+        </div>
+      </section>
+    </article>
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  const nextInput = document.getElementById('contact-next') as HTMLInputElement | null;
+  if (nextInput && !nextInput.value) {
+    nextInput.value = document.referrer || window.location.href;
+  }
+</script>

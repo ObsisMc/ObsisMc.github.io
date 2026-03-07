@@ -1,22 +1,36 @@
 ---
 import { getCollection } from 'astro:content';
+
+interface Props {
+  lang?: 'zh' | 'en';
+}
+const { lang = 'zh' } = Astro.props;
+const prefix = lang === 'en' ? '/en' : '';
+
 const posts = await getCollection('blog');
 const lastPost = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
 const lastUpdated = lastPost ? lastPost.data.date.toISOString().slice(0, 10) : '';
 
-const nav = [
-  { name: 'Home',     url: '/' },
-  { name: 'Timeline', url: '/archives' },
-  { name: 'Tags',     url: '/tags' },
-  { name: 'About',    url: '/about' },
-];
+const nav = lang === 'zh'
+  ? [
+      { name: '首页',  url: '/' },
+      { name: '时间轴', url: '/archives' },
+      { name: '标签',  url: '/tags' },
+      { name: '关于',  url: '/about' },
+    ]
+  : [
+      { name: 'Home',     url: '/en/' },
+      { name: 'Timeline', url: '/en/archives' },
+      { name: 'Tags',     url: '/en/tags' },
+      { name: 'About',    url: '/en/about' },
+    ];
 ---
 <header class="relative">
   <div class="relative flex items-start justify-center">
     <div class="text-center">
       <div class="relative inline-block">
         <h1 class="site-title">
-          <a href="/" style="text-decoration:none; color:inherit;">白夜書簡</a>
+          <a href={lang === 'zh' ? '/' : '/en/'} style="text-decoration:none; color:inherit;">白夜書簡</a>
         </h1>
         <!-- Seal — mathematically centered to the right of the title -->
         <div class="absolute left-full top-1/2 -translate-y-1/2 ml-1 sm:ml-4 origin-left scale-75 sm:scale-110">
@@ -38,7 +52,7 @@ const nav = [
       <!-- RSS + GitHub pills -->
       <div class="mt-3 sm:mt-4 flex justify-center gap-2">
         <a class="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200/80 bg-slate-50/50 text-xs tracking-wide text-slate-500 hover:bg-white hover:text-slate-800 hover:border-slate-300 hover:shadow-xs transition-all duration-300"
-          href="/rss.xml" target="_blank" style="text-decoration:none;">
+          href={lang === 'zh' ? '/rss.xml' : '/en/rss.xml'} target="_blank" style="text-decoration:none;">
           <!-- RSS icon -->
           <svg class="w-4 h-4 group-hover:text-orange-500 transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 11a9 9 0 0 1 9 9"></path>

@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import Divider from '../../../components/Divider.astro';
+
+const posts = (await getCollection('blog')).filter(p => p.id.startsWith('en/'));
+
+const tagCount: Record<string, number> = {};
+for (const post of posts) {
+  for (const tag of (post.data.tags || [])) {
+    tagCount[tag] = (tagCount[tag] || 0) + 1;
+  }
+}
+const tags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]);
+---
+<Base title="Tags" lang="en" altHref="/tags">
+  <Header lang="en" />
+  <main class="section-divider">
+    <section class="section-shell">
+      <header class="section-header">
+        <h1 class="section-title">Tags</h1>
+        <Divider />
+      </header>
+      {tags.length > 0 ? (
+        <div class="text-center mt-12 mb-16">
+          <div class="flex flex-wrap justify-center gap-3">
+            {tags.map(([tag, count]) => (
+              <a href={`/en/tags/${encodeURIComponent(tag)}`} class="tag-pill">
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-2" style="display:inline-block;"></span>
+                {tag}
+                <span class="text-slate-400 ml-1 text-xs">({count})</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <p class="text-center text-slate-400 mt-12">No tags yet.</p>
+      )}
+    </section>
+  </main>
+  <Footer />
+</Base>
