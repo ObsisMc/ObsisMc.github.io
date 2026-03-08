@@ -1,63 +1,90 @@
 # iBlog-astro
 
-Personal bilingual blog (zh/en) built with Astro, inspired by [hexo-theme-shiro](https://github.com/Acris/hexo-theme-shiro).
+Personal bilingual blog (zh/en) built with [Astro](https://astro.build) and [Tailwind CSS v4](https://tailwindcss.com), styled after [hexo-theme-shiro](https://github.com/Acris/hexo-theme-shiro). Deployed to GitHub Pages via GitHub Actions.
 
 Live at: [ruihaozhang.com](https://ruihaozhang.com)
 
-## Commands
+**Stack:** Astro 5 · Tailwind CSS v4 · Markdown · GitHub Pages · VSCode
 
-| Command           | Action                                      |
-| :---------------- | :------------------------------------------ |
-| `npm install`     | Install dependencies                        |
-| `npm run dev`     | Start local dev server at `localhost:4321`  |
-| `npm run build`   | Build production site to `./dist/`          |
-| `npm run preview` | Preview build locally before deploying      |
+---
 
-## External Services & Dependencies
+## Local Development
 
-### Required Setup
+**Prerequisites:** Node.js 18+
 
-| Service | Purpose | Setup |
-| :------ | :------ | :---- |
-| [EmailJS](https://emailjs.com) | Contact form email delivery | Create account, add Gmail service, create email template. Update `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, `EMAILJS_PUBLIC_KEY` in `src/pages/about.astro` |
-| [Giscus](https://giscus.app) | Blog post comments (GitHub Discussions) | Enable GitHub Discussions on target repo, configure at giscus.app. Update script attributes in `src/pages/blog/[slug].astro` and `src/pages/en/blog/[slug].astro` |
-| [Google Analytics](https://analytics.google.com) | Site analytics | GA4 property ID configured in `src/layouts/Base.astro` (ID: `G-VWVSG2MS4Y`) |
-| [GitHub Pages](https://pages.github.com) | Hosting | Push to `main` branch triggers auto-deploy via `.github/workflows/deploy.yml`. Set Pages source to "GitHub Actions" in repo Settings → Pages |
+```bash
+npm install
+npm run dev      # dev server at http://localhost:4321
+npm run build    # production build → dist/
+npm run preview  # preview the build locally
+```
 
-### EmailJS Template Variables
+---
 
-The contact form template (`src/pages/about.astro`) sends these variables:
+## Writing Posts
 
-| Variable | Content |
+### VSCode Extension
+
+Install **Front Matter CMS** (`eliostruyf.vscode-front-matter`) via the VSCode Extensions panel (search "Front Matter CMS").
+
+### Creating a new post with Front Matter CMS
+
+1. Open the **Front Matter** panel in the VSCode sidebar
+2. Click **Create content** and select a content type:
+   - `Blog (ZH)` → `src/content/blog/zh/`
+   - `Blog (EN)` → `src/content/blog/en/`
+   - `Notes` → `src/content/notes/`
+   - `Drafts` → `src/content/drafts/`
+3. Enter the title — `date` and `path_name` (URL slug) are auto-generated
+4. Edit tags / categories / excerpt in the right panel
+5. Write content below the frontmatter divider
+
+### Frontmatter reference
+
+```yaml
+---
+title: "Post Title"
+date: 2026-03-08
+path_name: "url-slug"   # optional, falls back to filename
+excerpt: "..."          # optional
+tags:
+  - TagName
+categories:
+  - CategoryName
+---
+```
+
+### Bilingual posts
+
+Chinese and English posts with the **same filename** are treated as a translation pair and linked via the language switcher.
+
+```
+src/content/blog/zh/git-common-commands.md   ← 中文
+src/content/blog/en/git-common-commands.md   ← English
+```
+
+---
+
+## External Services
+
+| Service | Purpose |
+| :------ | :------ |
+| [Giscus](https://giscus.app) | Comments via GitHub Discussions |
+| [Google Analytics](https://analytics.google.com) | Analytics (GA4 ID: `G-VWVSG2MS4Y`) |
+| [GitHub Pages](https://pages.github.com) | Hosting — push to `main` to deploy |
+
+### CDN resources (auto-loaded)
+
+| Resource | Purpose |
 | :------- | :------ |
-| `{{name}}` | Sender's name |
-| `{{reply_to}}` | Sender's email |
-| `{{message}}` | Message body |
-| `{{subject}}` | Email subject |
+| [KaTeX](https://katex.org) 0.16.22 | Math formula rendering |
+| [LightGallery](https://www.lightgalleryjs.com) 2.8.3 | Image lightbox |
 
-Recommended template content:
-```
-From: {{name}} <{{reply_to}}>
-
-{{message}}
-```
-
-### CDN Resources (loaded automatically)
-
-| Resource | Version | Purpose |
-| :------- | :------ | :------ |
-| [KaTeX](https://katex.org) | 0.16.22 | Math formula rendering in posts |
-| [LightGallery](https://www.lightgalleryjs.com) | 2.8.3 | Image lightbox in posts |
-
-### Google Fonts (loaded automatically)
-
-- **Liu Jian Mao Cao** — site title (calligraphy)
-- **Zeyada** — English name display
-- **ZCOOL XiaoWei** — Chinese font fallback
-- **Cormorant Garamond** — footer font
+---
 
 ## Deployment
 
 Push to `main` → GitHub Actions builds and deploys to GitHub Pages automatically.
+See [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
 
-Custom domain is configured via `public/CNAME` (`ruihaozhang.com`).
+Custom domain configured via `public/CNAME` (`ruihaozhang.com`).
