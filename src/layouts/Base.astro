@@ -8,7 +8,7 @@ interface Props {
   altHref?: string;
 }
 const { title, isPost = false, lang = 'zh', altHref } = Astro.props;
-const siteTitle = '白夜書簡';
+const siteTitle = lang === 'zh' ? '张睿豪' : 'Ruihao (Ray) Zhang';
 const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
 ---
 <!doctype html>
