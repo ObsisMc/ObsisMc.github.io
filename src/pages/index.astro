@@ -67,3 +67,12 @@ function getExcerpt(post: any) {
   </main>
   <Footer />
 </Base>
+
+<script>
+  if (!sessionStorage.getItem('lang-detected')) {
+    sessionStorage.setItem('lang-detected', '1');
+    if (!navigator.language.startsWith('zh')) {
+      window.location.replace('/en/');
+    }
+  }
+</script>
