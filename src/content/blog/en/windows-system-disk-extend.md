@@ -7,6 +7,7 @@ tags:
 categories:
   - Misc
 excerpt: A guide to expanding the Windows C drive using non-adjacent unallocated space.
+draft: true
 ---
 
 *(English translation coming soon.)*

@@ -7,6 +7,7 @@ tags:
 categories:
   - Misc
 excerpt: Step-by-step guide to removing Linux and restoring Windows as the sole boot OS.
+draft: true
 ---
 
 *(English translation coming soon.)*

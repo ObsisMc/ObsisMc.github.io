@@ -4,6 +4,7 @@ path_name: git-common-commands
 date: 2026-02-01 11:57:20
 tags:
   - Git
+draft: false
 ---
 
 记录一些常用的Git命令，方便查阅。

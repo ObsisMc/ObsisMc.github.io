@@ -6,6 +6,7 @@ tags: []
 categories:
   - Java
 excerpt: Notes on unit testing in Java with Junit4 and PowerMockito.
+draft: true
 ---
 
 *(English translation coming soon.)*

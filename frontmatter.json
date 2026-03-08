@@ -1,0 +1,207 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.content.defaultFileType": "md",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Blog (ZH)",
+      "path": "[[workspace]]/src/content/blog/zh",
+      "contentTypes": [
+        "blog-zh"
+      ]
+    },
+    {
+      "title": "Blog (EN)",
+      "path": "[[workspace]]/src/content/blog/en",
+      "contentTypes": [
+        "blog-en"
+      ]
+    },
+    {
+      "title": "Notes",
+      "path": "[[workspace]]/src/content/notes",
+      "contentTypes": [
+        "notes"
+      ]
+    },
+    {
+      "title": "Drafts",
+      "path": "[[workspace]]/src/content/drafts",
+      "contentTypes": [
+        "draft"
+      ]
+    }
+  ],
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "blog-zh",
+      "pageBundle": false,
+      "filePrefix": "",
+      "template": "[[workspace]]/.frontmatter/templates/blog-zh.md",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "single": true
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true,
+          "dateOnly": true
+        },
+        {
+          "title": "Slug",
+          "name": "path_name",
+          "type": "slug",
+          "editable": true,
+          "slugTemplate": "{{slugify title}}"
+        },
+        {
+          "title": "Excerpt",
+          "name": "excerpt",
+          "type": "string",
+          "single": false
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft"
+        }
+      ]
+    },
+    {
+      "name": "blog-en",
+      "pageBundle": false,
+      "filePrefix": "",
+      "template": "[[workspace]]/.frontmatter/templates/blog-en.md",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "single": true
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true,
+          "dateOnly": true
+        },
+        {
+          "title": "Slug",
+          "name": "path_name",
+          "type": "slug",
+          "editable": true,
+          "slugTemplate": "{{slugify title}}"
+        },
+        {
+          "title": "Excerpt",
+          "name": "excerpt",
+          "type": "string",
+          "single": false
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft"
+        }
+      ]
+    },
+    {
+      "name": "notes",
+      "pageBundle": false,
+      "filePrefix": "",
+      "template": "[[workspace]]/.frontmatter/templates/notes.md",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "single": true
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true,
+          "dateOnly": true
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft"
+        }
+      ]
+    },
+    {
+      "name": "draft",
+      "pageBundle": false,
+      "filePrefix": "",
+      "template": "[[workspace]]/.frontmatter/templates/draft.md",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "single": true
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "dateOnly": true
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft"
+        }
+      ]
+    }
+  ],
+  "frontMatter.dashboard.openOnStart": false,
+}

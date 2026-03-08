@@ -1,0 +1,6 @@
+{
+    "frontMatter.framework.id": "astro",
+    "frontMatter.preview.host": "http://localhost:4321",
+    "frontMatter.content.publicFolder": "public",
+    "frontMatter.git.enabled": true
+}

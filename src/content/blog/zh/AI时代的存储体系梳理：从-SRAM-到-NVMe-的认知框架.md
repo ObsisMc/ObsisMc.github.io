@@ -4,6 +4,7 @@ path_name: ai-era-storage-hierarchy-from-sram-to-nvme
 date: 2026-02-02 21:38:55
 categories:
   - 计算机组成原理
+draft: false
 ---
 
 ![text](/AI时代的存储体系梳理：从-SRAM-到-NVMe-的认知框架/hierarchy.svg)

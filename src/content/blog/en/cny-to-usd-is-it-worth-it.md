@@ -7,6 +7,7 @@ tags:
 categories:
   - Finance
 excerpt: An analysis of whether converting Chinese Yuan to US Dollars for spending abroad is financially advantageous.
+draft: true
 ---
 
 *(English translation coming soon.)*

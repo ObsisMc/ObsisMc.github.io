@@ -7,6 +7,7 @@ tags:
 categories:
   - 计算机网络
 excerpt: An investigation into IPv6 and DNS leak issues when using VPN in system proxy mode versus TUN mode.
+draft: true
 ---
 
 *(English translation coming soon.)*

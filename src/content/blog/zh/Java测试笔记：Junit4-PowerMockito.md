@@ -4,6 +4,7 @@ path_name: java-test-junit4-powerMockito
 date: 2026-02-27 23:53:22
 categories:
   - Java
+draft: false
 ---
 
 ## 测试的 AAA 步骤

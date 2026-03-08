@@ -6,6 +6,7 @@ categories:
     - Misc
 tag:
     - Misc
+draft: false
 ---
 
 > Tips: 最好配合AI食用，确保每一步都知道在做什么，避免系统崩溃
