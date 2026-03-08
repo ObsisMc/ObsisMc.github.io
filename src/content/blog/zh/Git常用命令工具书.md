@@ -67,7 +67,7 @@ git rebase --continue
 
 #### 给仓库添加子模块
 ```shell
-// 将远程其他仓库作为子模块添加到当前仓库中（可以指定保存路径local_path）
+// 将远程其他仓库作为子模块添加到当前仓库中（可以指定保存路径local_path），local_path下面就是源代码，不会再套一层仓库名
 git submodule add <remote_repository_url> [<local_path>]
 
 // 然后会出现 .gitmodules 文件和你指定的文件路径，记得提交
