@@ -59,13 +59,8 @@ import Divider from '../components/Divider.astro';
                 Send a message and I will get back to you by email.
               </p>
               <Divider class="my-6" />
-              <form class="space-y-4" action="https://formsubmit.co/f97d0a44c26199a38bf41eaec175931d" method="POST" style="display:flex; flex-direction:column; gap:1rem;">
-                <input type="hidden" name="_subject" value="New message from your Github Page blog" />
-                <input type="hidden" name="_next" id="contact-next" value="" />
-                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none;" />
-                <input type="hidden" name="_autoresponse" value="Thanks! I received your message and will reply soon." />
-                <input type="hidden" name="_captcha" value="true" />
-                <input type="hidden" name="_template" value="table" />
+              <form id="contact-form" style="display:flex; flex-direction:column; gap:1rem;">
+                <input type="text" name="_honeypot" tabindex="-1" autocomplete="off" style="display:none;" />
                 <div>
                   <label for="contact-name" style="display:block; font-size:0.875rem; color:#475569; margin-bottom:0.25rem;">Name</label>
                   <input id="contact-name" name="name" type="text" required
@@ -82,8 +77,9 @@ import Divider from '../components/Divider.astro';
                     style="width:100%; border-radius:0.75rem; border:1px solid #e2e8f0; background:rgba(255,255,255,0.7); padding:0.625rem 0.75rem; color:#1e293b; outline:none; resize:vertical; font-family:inherit; font-size:0.9rem;"></textarea>
                 </div>
                 <div style="padding-top:0.5rem; text-align:center;">
-                  <button type="submit" class="btn-ink">Send Message</button>
+                  <button type="submit" id="contact-submit" class="btn-ink">Send Message</button>
                 </div>
+                <p id="contact-status" style="text-align:center; font-size:0.875rem; min-height:1.25rem; color:#64748b;"></p>
               </form>
             </div>
           </section>
@@ -96,8 +92,54 @@ import Divider from '../components/Divider.astro';
 </Base>
 
 <script>
-  const nextInput = document.getElementById('contact-next') as HTMLInputElement | null;
-  if (nextInput && !nextInput.value) {
-    nextInput.value = document.referrer || window.location.href;
-  }
+  const EMAILJS_SERVICE_ID = 'service_5sdszaw';
+  const EMAILJS_TEMPLATE_ID = 'template_9moqm35';
+  const EMAILJS_PUBLIC_KEY = 'Pg8j6DUjUnrPxtJjh';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const statusEl = document.getElementById('contact-status') as HTMLParagraphElement | null;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    // Honeypot check
+    const honeypot = form.querySelector('[name="_honeypot"]') as HTMLInputElement | null;
+    if (honeypot?.value) return;
+
+    const name = (form.querySelector('#contact-name') as HTMLInputElement).value.trim();
+    const email = (form.querySelector('#contact-email') as HTMLInputElement).value.trim();
+    const message = (form.querySelector('#contact-message') as HTMLTextAreaElement).value.trim();
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+    if (statusEl) { statusEl.textContent = ''; statusEl.style.color = '#64748b'; }
+
+    try {
+      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          service_id: EMAILJS_SERVICE_ID,
+          template_id: EMAILJS_TEMPLATE_ID,
+          user_id: EMAILJS_PUBLIC_KEY,
+          template_params: {
+            subject: `New message from my blog website`,
+            reply_to: email,
+            name: name,
+            message: message
+          },
+        }),
+      });
+      if (res.ok) {
+        if (statusEl) { statusEl.textContent = 'Message sent! I will get back to you soon.'; statusEl.style.color = '#16a34a'; }
+        form.reset();
+      } else {
+        throw new Error(await res.text());
+      }
+    } catch (err) {
+      if (statusEl) { statusEl.textContent = 'Failed to send. Please try again later.'; statusEl.style.color = '#dc2626'; }
+      console.error(err);
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; }
+    }
+  });
 </script>
