@@ -27,3 +27,5 @@ pnpm-debug.log*
 # Python
 .venv/
 uv.lock
+
+test*

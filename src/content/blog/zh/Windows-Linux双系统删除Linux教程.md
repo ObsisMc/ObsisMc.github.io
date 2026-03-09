@@ -1,12 +1,14 @@
 ---
-title: Windows/Linux双系统删除Linux教程
-path_name: delete-linux
-date: 2026-03-03 23:53:22
 categories:
-    - Misc
-tag:
-    - Misc
+- Misc
+date: 2026-03-03 23:53:22
 draft: false
+excerpt: 在 Windows 11 + Ubuntu 双系统环境下，通过恢复 Windows EFI 引导、使用磁盘管理或 diskpart 强制删除 Linux
+  分区，最终将释放的空间格式化为 NTFS 新建卷，即可干净地移除 Linux 并保留完整的 Windows 系统。
+path_name: delete-linux
+tag:
+- Misc
+title: Windows/Linux双系统删除Linux教程
 ---
 
 > Tips: 最好配合AI食用，确保每一步都知道在做什么，避免系统崩溃

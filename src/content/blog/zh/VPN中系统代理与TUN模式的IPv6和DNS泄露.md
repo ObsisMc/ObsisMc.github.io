@@ -1,15 +1,15 @@
 ---
-title: VPN中系统代理与TUN模式的IPv6和DNS泄露
-path_name: vpn-proxy-tun-ipv6-dns-leak
-date: 2026-03-07 10:51:24
 categories:
-    - 计算机网络
-tags:
-    - 计算机网络
+- 计算机网络
+date: 2026-03-07 10:51:24
 draft: false
+excerpt: 在中国通过VPN使用Claude时，单独开启TUN模式会导致IPv6与DNS泄露，使网页版Claude无法访问；而单独开启系统代理则让终端工具Claude
+  Code失效。同时启用两种模式是目前最简单可靠的解决方案。
+path_name: vpn-proxy-tun-ipv6-dns-leak
+tags:
+- 计算机网络
+title: VPN中系统代理与TUN模式的IPv6和DNS泄露
 ---
-
-
 
 ## 问题
 
@@ -42,4 +42,3 @@ draft: false
 问题的原因大概是因为 TUN模式 没有代理IPv6同时也没禁止它，导致IP和DNS泄露了。所以如果只开 TUN 的话，网页版检测到IPv6不对就无法使用Claude。
 
 不过问题是为什么 TUN 没代理IPv6，可能是没配置好或者就是不代理IPv6？不管怎么样，目前最简单的解决方法就是同时打开系统代理和TUN。
-
