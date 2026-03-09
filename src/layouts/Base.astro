@@ -18,6 +18,10 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title ? `${title} | ${siteTitle}` : siteTitle}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Anti-flash: apply dark class before first paint -->
+  <script is:inline>
+    (function(){try{var s=localStorage.getItem('theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(s===null&&d))document.documentElement.classList.add('dark');}catch(e){}})();
+  </script>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWVSG2MS4Y"></script>
   <script>
@@ -62,8 +66,26 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
       <slot />
     </div>
 
-    <!-- Lang Switcher (fixed top-right) -->
-    <div id="langSwitcher" class="lang-switcher" data-open="false">
+    <!-- Top-right controls: dark toggle + lang switcher -->
+    <div class="lang-switcher" style="display:flex; align-items:center; gap:0.45rem;">
+
+    <!-- Dark mode toggle -->
+    <button id="darkToggleBtn" class="dark-toggle-btn" type="button" aria-label="Toggle dark mode">
+      <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+
+    <div id="langSwitcher" data-open="false" style="position:relative;">
       <button id="langToggleBtn" class="lang-toggle-btn" type="button"
         aria-label="Switch language" aria-haspopup="listbox" aria-expanded="false">
         <span>{lang === 'zh' ? 'ZH' : 'EN'}</span>
@@ -76,6 +98,7 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
           href={lang === 'en' ? '#' : switchHref} role="option">English</a>
       </div>
     </div>
+    </div><!-- end top-right controls -->
 
     <!-- To-top button -->
     <button id="toTopBtn" class="to-top-btn" type="button" aria-label="回到顶部">
@@ -94,6 +117,15 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
   </div>
 
   <script>
+    // Dark mode toggle
+    const darkToggleBtn = document.getElementById('darkToggleBtn');
+    if (darkToggleBtn) {
+      darkToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(e) {}
+      });
+    }
+
     // To-top button
     const toTopBtn = document.getElementById('toTopBtn');
     if (toTopBtn) {

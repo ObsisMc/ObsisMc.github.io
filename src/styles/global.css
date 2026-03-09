@@ -73,6 +73,10 @@
         height: 100%;
     }
 
+    html.dark {
+        color-scheme: dark;
+    }
+
     body {
         font-family: var(--font-serif);
         -webkit-font-smoothing: antialiased;
@@ -661,7 +665,7 @@
     opacity: 0.6;
 }
 
-.lang-switcher[data-open="true"] .lang-toggle-chevron {
+#langSwitcher[data-open="true"] .lang-toggle-chevron {
     transform: rotate(-135deg) translateY(0.1rem);
 }
 
@@ -682,7 +686,7 @@
     transition: opacity 0.15s, transform 0.15s;
 }
 
-.lang-switcher[data-open="true"] .lang-dropdown {
+#langSwitcher[data-open="true"] .lang-dropdown {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
@@ -1117,3 +1121,167 @@
 .post-toc .toc-text {
     font-size: 0.875rem;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   DARK MODE OVERRIDES
+   ══════════════════════════════════════════════════════════════ */
+
+/* CSS variable token overrides */
+html.dark {
+    --color-paper:                   #1a1d21;
+    --color-ink:                     #e2e4e9;
+    --color-soft-border:             rgba(255, 255, 255, 0.07);
+    --color-focus-ring:              rgba(200, 210, 220, 0.22);
+    --color-scrollbar-track:         #1f2226;
+    --color-scrollbar-thumb:         rgba(200, 210, 220, 0.28);
+    --color-scrollbar-thumb-hover:   rgba(200, 210, 220, 0.45);
+    --color-scrollbar-border:        rgba(200, 210, 220, 0.14);
+    --shadow-paper:                  0 1px 1px rgba(0,0,0,0.25), 0 10px 30px rgba(0,0,0,0.35), 0 35px 70px rgba(0,0,0,0.25);
+    --shadow-ink:                    0 4px 12px rgba(0,0,0,0.45);
+    --shadow-ink-pressed:            0 2px 8px rgba(0,0,0,0.38);
+}
+
+/* Background */
+html.dark .fog-bg {
+    background:
+        radial-gradient(1200px 500px at 50% -100px, rgba(30,34,40,0.8), rgba(30,34,40,0) 65%),
+        radial-gradient(900px 400px at 90% 10%,  rgba(30,34,40,0.4), rgba(30,34,40,0) 55%),
+        linear-gradient(180deg, #111316 0%, #0e1013 55%, #111316 100%);
+}
+
+/* Paper texture: switch blend mode so it doesn't go pitch black */
+html.dark .paper::before {
+    mix-blend-mode: screen;
+    opacity: 0.06;
+}
+
+/* Typography */
+html.dark .site-title         { color: #e8eaf0; }
+html.dark .site-subtitle      { color: #94a3b8; }
+html.dark .page-title,
+html.dark .section-title      { color: #e8eaf0; }
+html.dark .card-title         { color: #e8eaf0; }
+html.dark .card-title:hover   { color: #94a3b8; }
+html.dark .section-heading    { color: #d1d5db; border-bottom-color: rgba(255,255,255,0.07); }
+html.dark .archive-date       { color: #64748b; }
+html.dark .archive-title      { color: #b0bec5; }
+html.dark .archive-title:hover { color: #e8eaf0; }
+
+/* Buttons & pills */
+html.dark .btn-ink            { color: #d1d5db; border-color: rgba(148,163,184,0.35); }
+html.dark .btn-ink:hover      { background-color: var(--color-ink); color: rgba(15,19,26,0.95); }
+html.dark .tag-pill           { border-color: rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.05); color: #94a3b8; }
+html.dark .tag-pill:hover     { border-color: rgba(148,163,184,0.6); color: #e2e8f0; }
+html.dark .post-nav-link      { color: #94a3b8; }
+html.dark .post-nav-link:hover { color: #e8eaf0; }
+html.dark .link-muted         { color: #94a3b8; text-decoration-color: rgba(148,163,184,0.4); }
+html.dark .link-muted:hover   { color: #d1d5db; }
+
+/* To-top button */
+html.dark .to-top-btn         { background: rgba(26,29,34,0.9); color: #d1d5db; border-color: rgba(148,163,184,0.25); }
+html.dark .to-top-btn:hover   { background: #e2e8f0; color: #0f172a; border-color: #e2e8f0; }
+
+/* About page */
+html.dark .about-name-primary   { color: #e8eaf0; }
+html.dark .about-name-secondary { color: #94a3b8; }
+html.dark .about-slogan         { color: #b0bec5; }
+html.dark .social-icon          { color: #94a3b8; }
+html.dark .social-icon:hover    { color: #e2e8f0; }
+
+/* Section divider */
+html.dark .section-divider { border-top-color: rgba(148,163,184,0.15); }
+
+/* Prose */
+html.dark .prose-shiro {
+    --tw-prose-body:          #c8cdd6;
+    --tw-prose-headings:      var(--color-ink);
+    --tw-prose-lead:          #94a3b8;
+    --tw-prose-links:         #c8cdd6;
+    --tw-prose-bold:          var(--color-ink);
+    --tw-prose-counters:      #64748b;
+    --tw-prose-bullets:       rgba(148,163,184,0.4);
+    --tw-prose-hr:            rgba(255,255,255,0.08);
+    --tw-prose-quotes:        #94a3b8;
+    --tw-prose-quote-borders: #475569;
+    --tw-prose-captions:      #64748b;
+    --tw-prose-code:          var(--color-seal);
+    --tw-prose-pre-code:      #cbd5e1;
+    --tw-prose-pre-bg:        #0a0c0f;
+    --tw-prose-th-borders:    rgba(148,163,184,0.3);
+    --tw-prose-td-borders:    rgba(255,255,255,0.07);
+}
+html.dark .prose-shiro p,
+html.dark .prose-shiro li         { color: #c8cdd6; }
+html.dark .prose-shiro h2         { border-bottom-color: rgba(255,255,255,0.08); }
+html.dark .prose-shiro a          { color: #c8cdd6; text-decoration-color: rgba(148,163,184,0.4); }
+html.dark .prose-shiro blockquote { background: rgba(255,255,255,0.04); border-left-color: #475569; color: #94a3b8; }
+html.dark .prose-shiro :not(pre)>code { background: rgba(255,255,255,0.08); }
+html.dark .prose-shiro thead      { background: rgba(255,255,255,0.04); }
+html.dark .prose-shiro th         { border-bottom-color: rgba(148,163,184,0.3); border-right-color: rgba(255,255,255,0.07); }
+html.dark .prose-shiro td         { border-bottom-color: rgba(255,255,255,0.07); border-right-color: rgba(255,255,255,0.07); color: #94a3b8; }
+html.dark .prose-shiro tbody tr:hover { background: rgba(255,255,255,0.03); }
+html.dark .prose-shiro li::marker { color: rgba(148,163,184,0.4); }
+html.dark .prose-shiro hr         { border-top-color: rgba(255,255,255,0.08); }
+
+/* Lang switcher */
+html.dark .lang-toggle-btn  { background: rgba(26,29,34,0.92); border-color: rgba(148,163,184,0.2); color: #94a3b8; }
+html.dark .lang-toggle-btn:hover { background: rgba(30,35,42,0.98); color: #d1d5db; }
+html.dark .lang-dropdown    { background: rgba(26,29,34,0.96); border-color: rgba(148,163,184,0.2); }
+html.dark .lang-option      { color: #94a3b8; }
+html.dark .lang-option:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; }
+html.dark .lang-option[data-active="true"] { color: #e2e8f0; }
+html.dark .lang-option+.lang-option { border-top-color: rgba(255,255,255,0.07); }
+
+/* TOC */
+html.dark .post-toc {
+    background: linear-gradient(180deg, rgba(26,29,34,0.97), rgba(22,25,30,0.94));
+    border-color: rgba(148,163,184,0.15);
+    color: #94a3b8;
+}
+html.dark .post-toc[data-collapsed="true"][data-pinned="false"]::after {
+    background: rgba(26,29,34,0.9);
+    border-color: rgba(148,163,184,0.22);
+}
+html.dark .post-toc .toc-link           { color: #64748b; }
+html.dark .post-toc .toc-link.is-active,
+html.dark .post-toc .toc-link:hover     { color: #e2e4e9; }
+html.dark .post-toc .toc-child          { border-left-color: rgba(255,255,255,0.07); }
+html.dark .post-toc-toggle-icon         { border-right-color: #475569; border-bottom-color: #475569; }
+html.dark .post-toc[data-collapsed="true"][data-pinned="false"] .post-toc-bookmark { color: #d1d5db; }
+
+/* Dark mode toggle button */
+.dark-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+    color: #64748b;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    flex-shrink: 0;
+}
+.dark-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(148, 163, 184, 0.6);
+    color: #1f2937;
+}
+html.dark .dark-toggle-btn {
+    background: rgba(26, 29, 34, 0.92);
+    border-color: rgba(148, 163, 184, 0.2);
+    color: #94a3b8;
+}
+html.dark .dark-toggle-btn:hover {
+    background: rgba(30, 35, 42, 0.98);
+    color: #e2e8f0;
+}
+/* Icon visibility */
+.dark-toggle-btn .icon-moon { display: block; }
+.dark-toggle-btn .icon-sun  { display: none; }
+html.dark .dark-toggle-btn .icon-moon { display: none; }
+html.dark .dark-toggle-btn .icon-sun  { display: block; }
