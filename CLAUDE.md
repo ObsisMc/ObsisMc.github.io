@@ -31,7 +31,7 @@ When in doubt about any visual detail, read the shiro source — do not guess.
 
 ```
 Owner:     张睿豪
-Alias:     Ruihao (Ray) Zhang
+Alias:     Ray Zhang
 Tagline:   Systems, Data, Code, and Ideas
 Seal char: 豪
 Slogan font: yuji-boku

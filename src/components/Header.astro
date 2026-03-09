@@ -1,66 +1,108 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
 interface Props {
-  lang?: 'zh' | 'en';
+  lang?: "zh" | "en";
 }
-const { lang = 'zh' } = Astro.props;
-const prefix = lang === 'en' ? '/en' : '';
+const { lang = "zh" } = Astro.props;
+const prefix = lang === "en" ? "/en" : "";
 
-const posts = await getCollection('blog');
-const lastPost = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
-const lastUpdated = lastPost ? lastPost.data.date.toISOString().slice(0, 10) : '';
+const posts = await getCollection("blog");
+const lastPost = posts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+)[0];
+const lastUpdated = lastPost
+  ? lastPost.data.date.toISOString().slice(0, 10)
+  : "";
 
-const nav = lang === 'zh'
-  ? [
-      { name: '首页',  url: '/' },
-      { name: '时间轴', url: '/archives' },
-      { name: '分类',  url: '/categories' },
-      { name: '标签',  url: '/tags' },
-      { name: '关于',  url: '/about' },
-    ]
-  : [
-      { name: 'Home',       url: '/en/' },
-      { name: 'Timeline',   url: '/en/archives' },
-      { name: 'Categories', url: '/en/categories' },
-      { name: 'Tags',       url: '/en/tags' },
-      { name: 'About',      url: '/en/about' },
-    ];
+const nav =
+  lang === "zh"
+    ? [
+        { name: "首页", url: "/" },
+        { name: "时间轴", url: "/archives" },
+        { name: "分类", url: "/categories" },
+        { name: "标签", url: "/tags" },
+        { name: "关于", url: "/about" },
+      ]
+    : [
+        { name: "Home", url: "/en/" },
+        { name: "Timeline", url: "/en/archives" },
+        { name: "Categories", url: "/en/categories" },
+        { name: "Tags", url: "/en/tags" },
+        { name: "About", url: "/en/about" },
+      ];
 ---
+
 <header class="relative">
   <div class="relative flex items-start justify-center">
     <div class="text-center">
       <div class="relative inline-block">
         <h1 class="site-title">
-          {lang === 'zh'
-            ? <a href="/" style="text-decoration:none; color:inherit;">张睿豪</a>
-            : <a href="/en/" style="text-decoration:none; color:inherit; font-family:var(--font-name-en); font-size:0.85em; letter-spacing:0.01em;">Ruihao (Ray) Zhang</a>
+          {
+            lang === "zh" ? (
+              <a href="/" style="text-decoration:none; color:inherit;">
+                张睿豪
+              </a>
+            ) : (
+              <a
+                href="/en/"
+                style="text-decoration:none; color:inherit; font-family:var(--font-name-en); font-size:0.85em; letter-spacing:0.01em;"
+              >
+                Ray Zhang
+              </a>
+            )
           }
         </h1>
       </div>
 
       <p class="site-subtitle">
-        {lastUpdated ? `Last updated: ${lastUpdated}` : '以夜為箋，寄心成簡。'}
+        {lastUpdated ? `Last updated: ${lastUpdated}` : "以夜為箋，寄心成簡。"}
       </p>
 
       <!-- RSS + GitHub pills -->
       <div class="mt-3 sm:mt-4 flex justify-center gap-2">
-        <a class="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200/80 bg-slate-50/50 text-xs tracking-wide text-slate-500 hover:bg-white hover:text-slate-800 hover:border-slate-300 hover:shadow-xs transition-all duration-300"
-          href={lang === 'zh' ? '/rss.xml' : '/en/rss.xml'} target="_blank" style="text-decoration:none;">
+        <a
+          class="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200/80 bg-slate-50/50 text-xs tracking-wide text-slate-500 hover:bg-white hover:text-slate-800 hover:border-slate-300 hover:shadow-xs transition-all duration-300"
+          href={lang === "zh" ? "/rss.xml" : "/en/rss.xml"}
+          target="_blank"
+          style="text-decoration:none;"
+        >
           <!-- RSS icon -->
-          <svg class="w-4 h-4 group-hover:text-orange-500 transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            class="w-4 h-4 group-hover:text-orange-500 transition-colors duration-300"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path d="M4 11a9 9 0 0 1 9 9"></path>
             <path d="M4 4a16 16 0 0 1 16 16"></path>
             <circle cx="5" cy="19" r="1"></circle>
           </svg>
           <span>RSS</span>
         </a>
-        <a class="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200/80 bg-slate-50/50 text-xs tracking-wide text-slate-500 hover:bg-white hover:text-slate-800 hover:border-slate-300 hover:shadow-xs transition-all duration-300"
-          href="https://github.com/ObsisMc" target="_blank" rel="noopener noreferrer"
-          aria-label="GitHub" style="text-decoration:none;">
+        <a
+          class="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200/80 bg-slate-50/50 text-xs tracking-wide text-slate-500 hover:bg-white hover:text-slate-800 hover:border-slate-300 hover:shadow-xs transition-all duration-300"
+          href="https://github.com/ObsisMc"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          style="text-decoration:none;"
+        >
           <!-- GitHub icon -->
-          <svg class="w-4 h-4 group-hover:text-slate-800 transition-colors duration-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.78 5.45.78 11.72c0 4.85 3.14 8.96 7.5 10.42.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.05.66-3.7-1.47-3.7-1.47-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.43-.28-4.99-1.22-4.99-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .91-.29 2.98 1.12.86-.24 1.78-.36 2.7-.36.91 0 1.84.12 2.7.36 2.07-1.41 2.98-1.12 2.98-1.12.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.57 5.16-5.02 5.43.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.76.53 4.36-1.46 7.5-5.57 7.5-10.42C23.22 5.45 18.27.5 12 .5z" />
+          <svg
+            class="w-4 h-4 group-hover:text-slate-800 transition-colors duration-300"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 .5C5.73.5.78 5.45.78 11.72c0 4.85 3.14 8.96 7.5 10.42.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.05.66-3.7-1.47-3.7-1.47-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.43-.28-4.99-1.22-4.99-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .91-.29 2.98 1.12.86-.24 1.78-.36 2.7-.36.91 0 1.84.12 2.7.36 2.07-1.41 2.98-1.12 2.98-1.12.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.57 5.16-5.02 5.43.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.76.53 4.36-1.46 7.5-5.57 7.5-10.42C23.22 5.45 18.27.5 12 .5z"
+            ></path>
           </svg>
           <span>GitHub</span>
         </a>
@@ -73,49 +115,82 @@ const nav = lang === 'zh'
 <nav class="mt-8 md:mt-10" aria-label="Menu">
   <!-- Mobile toggle -->
   <div class="flex items-center justify-center md:hidden">
-    <button id="menuBtn"
+    <button
+      id="menuBtn"
       class="focus-elegant inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-4 py-2 text-sm text-slate-700 shadow-xs backdrop-blur-xs"
-      aria-expanded="false" aria-controls="mobileMenu">
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+    >
       <span class="text-base leading-none tracking-widest">Menu</span>
       <!-- Chevron icon -->
-      <svg id="menuChevron" class="h-4 w-4 text-slate-500 transition-transform duration-200"
-        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" clip-rule="evenodd" />
+      <svg
+        id="menuChevron"
+        class="h-4 w-4 text-slate-500 transition-transform duration-200"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z"
+          clip-rule="evenodd"></path>
       </svg>
     </button>
   </div>
 
   <!-- Desktop menu -->
   <div class="hidden md:block">
-    <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-slate-700 px-4" style="list-style:none; margin:0; padding-left:1rem; padding-right:1rem;">
-      {nav.map((item, i) => (
-        <>
-          <li>
-            <a class="focus-elegant rounded-md px-2 py-1 hover:text-slate-900 transition-colors"
-              href={item.url} style="text-decoration:none;">{item.name}</a>
-          </li>
-          {i < nav.length - 1 && (
-            <li class="text-slate-300 select-none" aria-hidden="true">/</li>
-          )}
-        </>
-      ))}
+    <ul
+      class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-slate-700 px-4"
+      style="list-style:none; margin:0; padding-left:1rem; padding-right:1rem;"
+    >
+      {
+        nav.map((item, i) => (
+          <>
+            <li>
+              <a
+                class="focus-elegant rounded-md px-2 py-1 hover:text-slate-900 transition-colors"
+                href={item.url}
+                style="text-decoration:none;"
+              >
+                {item.name}
+              </a>
+            </li>
+            {i < nav.length - 1 && (
+              <li class="text-slate-300 select-none" aria-hidden="true">
+                /
+              </li>
+            )}
+          </>
+        ))
+      }
     </ul>
   </div>
 
   <!-- Mobile menu panel -->
   <div id="mobileMenu" class="menu-panel md:hidden mt-4" data-open="false">
-    <ul class="mx-auto max-w-sm max-h-menu overflow-y-auto rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xs shadow-xs" style="list-style:none; margin-left:auto; margin-right:auto;">
-      {nav.map((item, i) => (
-        <>
-          <li>
-            <a class="focus-elegant block px-6 py-3 text-center text-slate-800 hover:bg-slate-50/80 transition-colors"
-              href={item.url} style="text-decoration:none;">{item.name}</a>
-          </li>
-          {i < nav.length - 1 && (
-            <li class="h-px bg-slate-200/70" aria-hidden="true"></li>
-          )}
-        </>
-      ))}
+    <ul
+      class="mx-auto max-w-sm max-h-menu overflow-y-auto rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-xs shadow-xs"
+      style="list-style:none; margin-left:auto; margin-right:auto;"
+    >
+      {
+        nav.map((item, i) => (
+          <>
+            <li>
+              <a
+                class="focus-elegant block px-6 py-3 text-center text-slate-800 hover:bg-slate-50/80 transition-colors"
+                href={item.url}
+                style="text-decoration:none;"
+              >
+                {item.name}
+              </a>
+            </li>
+            {i < nav.length - 1 && (
+              <li class="h-px bg-slate-200/70" aria-hidden="true" />
+            )}
+          </>
+        ))
+      }
     </ul>
   </div>
 </nav>
