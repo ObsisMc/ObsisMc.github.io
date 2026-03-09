@@ -26,7 +26,7 @@ uv run python tools/translate.py one src/content/blog/zh/my-post.md
 # Translate all zh posts (full, overwrites en/)
 uv run python tools/translate.py all
 
-# Incremental — only git-changed zh posts
+# Incremental — only git-changed zh posts, whenever you add or update them
 uv run python tools/translate.py diff
 ```
 
