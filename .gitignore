@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 
 .claude/
+# Python
+.venv/
+uv.lock

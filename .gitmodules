@@ -1,0 +1,3 @@
+[submodule "tools/md_translator"]
+	path = tools/md_translator
+	url = https://github.com/ObsisMc/md_translator
