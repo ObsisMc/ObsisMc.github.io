@@ -75,13 +75,19 @@ git add .gitmodules <local_path>
 git commit -m "Add submodule"
 ```
 
-#### 更新 submodule
+#### 初始化 submodule
 ```shell
-// pull主仓库的同时更新submodule
+// pull主仓库的同时初始化submodule
 git pull --recurse-submodules
 
-// 直接更新 submodule
+// submodule没拉取得情况初始化所有submodule
 git submodule update --init --recursive
+```
+
+
+#### 更新 submodule
+```shell
+git submodule update --remote
 ```
 
 
