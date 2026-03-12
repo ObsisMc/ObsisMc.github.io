@@ -10,6 +10,11 @@ interface Props {
 const { title, isPost = false, lang = 'zh', altHref } = Astro.props;
 const siteTitle = lang === 'zh' ? '张睿豪' : 'Ray Zhang';
 const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
+const siteOrigin = 'https://ruihaozhang.com';
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin).href;
+// For hreflang: current page is canonical for its own lang, altHref is the other lang's URL
+const zhHref = lang === 'zh' ? Astro.url.pathname : (altHref ?? '/');
+const enHref = lang === 'en' ? Astro.url.pathname : (altHref ?? '/en/');
 ---
 <!doctype html>
 <html lang={lang === 'zh' ? 'zh-CN' : 'en'} class="h-full scroll-smooth">
@@ -18,6 +23,10 @@ const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title ? `${title} | ${siteTitle}` : siteTitle}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href={canonicalURL} />
+  <link rel="alternate" hreflang="zh-CN" href={`${siteOrigin}${zhHref}`} />
+  <link rel="alternate" hreflang="en" href={`${siteOrigin}${enHref}`} />
+  <link rel="alternate" hreflang="x-default" href={`${siteOrigin}/`} />
   <!-- Anti-flash: apply dark class before first paint -->
   <script is:inline>
     (function(){try{var s=localStorage.getItem('theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(s===null&&d))document.documentElement.classList.add('dark');}catch(e){}})();
