@@ -86,8 +86,11 @@ def cmd_diff():
     if not files:
         print("No zh/ markdown files found.")
         return
-    zh_folder = CONTENT_ROOT / "blog" / "zh"
-    changed = get_changed_md_files(zh_folder)
+    changed: set[Path] = set()
+    for section in ("blog", "notes"):
+        zh_folder = CONTENT_ROOT / section / "zh"
+        if zh_folder.exists():
+            changed |= get_changed_md_files(zh_folder)
     if not changed:
         print("No changed .md files found.")
         return
