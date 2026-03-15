@@ -618,6 +618,90 @@
     .max-w-divider {
         max-width: 120px;
     }
+
+    /* ── Note timeline ─────────────────────────────────────────── */
+    .note-timeline {
+        position: relative;
+        max-width: 36rem;
+        margin: 0 auto;
+        padding-left: 2rem;   /* must be >= dot offset from line */
+    }
+
+    /* vertical line */
+    .note-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.6rem;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(to bottom, #cbd5e1 0%, transparent 100%);
+    }
+
+    .note-item {
+        position: relative;
+        padding: 0 0 1.75rem 1rem;
+    }
+
+    /* dot on the line */
+    .note-item::before {
+        content: '';
+        position: absolute;
+        left: -2.3rem;       /* centers the dot on the 1px line at left:0 */
+        top: 0.45rem;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #cbd5e1;
+        transition: background 0.2s;
+    }
+
+    .note-item:hover::before {
+        background: #c17f74;
+    }
+
+    .note-date {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        font-variant-numeric: oldstyle-nums;
+        margin-bottom: 0.3rem;
+        letter-spacing: 0.02em;
+    }
+
+    .note-body {
+        font-size: 0.975rem;
+        line-height: 1.75;
+        color: #334155;
+        word-break: break-word;
+    }
+
+    /* collapse prose default paragraph spacing inside notes */
+    .note-body p {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .note-body p:first-child {
+        margin-top: 0;
+    }
+
+    .note-footer {
+        margin-top: 0.4rem;
+        font-size: 0.78rem;
+        color: #94a3b8;
+        text-align: right;
+    }
+
+    .note-tag {
+        margin-left: 0.5rem;
+        color: #94a3b8;
+        cursor: default;
+        transition: color 0.2s;
+    }
+
+    .note-tag:hover {
+        color: #c17f74;
+    }
 }
 
 /* ── Lang switcher (fixed top-right) ─────────────────────────── */
