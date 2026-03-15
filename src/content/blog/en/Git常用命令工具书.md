@@ -3,7 +3,7 @@ date: 2026-02-01 11:57:20
 draft: false
 excerpt: This article compiles the most commonly used Git commands for day-to-day development, covering branch management, remote pushing, interactive rebase for editing commit history, and submodule operations including adding, initializing, and updating — a handy quick-reference guide.
 path_name: git-common-commands
-tags:
+categories:
 - Git
 title: Git Common Commands Reference
 ---
@@ -17,7 +17,11 @@ Fetch a remote branch that you don't have locally, associate it with a new local
 
 ```shell
 git fetch // fetch first
+
+// full command
 git checkout -b <new_local_branch> <remote_name>/<remote_branch>
+// shorthand — when the local branch name matches the remote branch name
+git checkout <remote_branch>
 ```
 
 
