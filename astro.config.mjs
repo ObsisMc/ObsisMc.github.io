@@ -5,7 +5,7 @@ import remarkGemoji from 'remark-gemoji';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ObsisMc.github.io',
+  site: 'https://ruihaozhang.com',
   output: 'static',
   image: {
     service: { entrypoint: 'astro/assets/services/noop' },
