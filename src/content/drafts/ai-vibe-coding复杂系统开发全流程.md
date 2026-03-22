@@ -4,7 +4,7 @@ date: 2026-03-17T01:27:40.967Z
 path_name: vibe-system-dev
 excerpt: ""
 tags: []
-categories: [Vibe Coding]
+categories: [AI-native Coding]
 draft: true
 fmContentType: blog-zh
 ---
