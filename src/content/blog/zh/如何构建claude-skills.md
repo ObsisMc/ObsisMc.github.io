@@ -172,20 +172,73 @@ With skill:
 
 如何使用别人的skill以及共享自己的skill。
 
-### 使用
+### 古法手作
 
 - 获取：
     - 从网上比如github下载skill文件夹或者压缩包
-    - 自己写
+    - 自己本地写
 - 使用：
     - 本地：skill放在当前项目/用户目录下的 `.claude/skills/`
     - claude网页：上传到Claude.ai via Settings > Capabilities > Skills
 
+### 自动化：Plugin & Marketplace
 
-### 分享
+**获取和使用**
 
-主要还是上传skill到github，注意在项目里加上README.md
-吸引用户使用（不要放在skill文件夹里！）
+Claude Code VsCode UI 里使用的话：
+1. 先添加Marketplaces: `show command menu -> Manage plugins -> Marketplaces -> Add`
+2. 然后添加该Marketplace中的插件：`Manage plugins -> Plugins` 搜索/选择你想安装的插件进行安装
+
+
+**分享自己的skills**
+
+搭建自己的Marketplace来分享自己的skills。
+
+最简易的方法如下，需要保持文件夹结构一致，
+其中plugins在marketplace.json中隐式地声明了（所以不需要再为每个plugin创建文件夹）。可以参考[anthropics/skills](https://github.com/anthropics/skills)。
+
+```txt
+
+your-marketplace/                ← 仓库根目录
+├── .claude-plugin/
+│   └── marketplace.json         ← Marketplace 定义（plugin 在此声明）
+├── skills/                      ← 所有 skill 放这里
+│   └── hello/
+│       └── SKILL.md
+│   └── greet/
+│       └── SKILL.md
+├── .gitignore
+└── README.md
+```
+
+最重要的是 `marketplace.json`，格式如下
+```json
+{
+  "name": "obsismc-marketplace", // 你的marketplace名称
+  "owner": {
+    "name": "ObsisMc"
+  },
+  "metadata": {
+    "description": "A collection of agent skills by ObsisMc, compatible with Claude Code and other Agent Skills-compatible tools."
+  },
+  "plugins": [
+    {
+      "name": "test-skills",  // 你的plugin名称
+      "source": "./",         // 设置base路径
+      "strict": false,
+      "description": "A collection of useful agent skills",
+      "skills": [
+        "./skills/hello",     // 你的skill路径
+        "./skills/greet"    
+      ]
+    }
+  ]
+}
+```
+Push到Gitub后，别人就能用你的Marketplace了，你的skill名字最终为 `/test-skills:hello`。
+
+
+### 其他Tips
 
 README写法：**关注skill的产出，而非功能**
 

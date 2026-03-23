@@ -174,19 +174,73 @@ A Skill still needs to be continuously iterated upon — fix and update the inst
 
 How to use others' Skills and share your own.
 
-### Using Skills
+### The Manual Way
 
 - Acquiring Skills:
     - Download the skill folder or archive from online sources such as GitHub
-    - Write your own
+    - Write your own locally
 - Using Skills:
     - Locally: place the Skill in `.claude/skills/` under the current project or user directory
     - Claude.ai: upload via Settings > Capabilities > Skills
 
 
-### Sharing Skills
+### Automated: Plugin & Marketplace
 
-The primary approach is to upload your Skill to GitHub. Remember to add a README.md to the repository to attract users — just don't put it inside the skill folder!
+**Getting and using Skills**
+
+To use Skills via the Claude Code VS Code UI:
+1. First add a Marketplace: `show command menu -> Manage plugins -> Marketplaces -> Add`
+2. Then install plugins from that Marketplace: `Manage plugins -> Plugins` — search for or select the plugin you want and install it
+
+
+**Sharing your own Skills**
+
+Set up your own Marketplace to share your Skills with others.
+
+The simplest approach is shown below. Keep the folder structure consistent — plugins are declared implicitly in `marketplace.json` (so there is no need to create a separate folder for each plugin). You can refer to [anthropics/skills](https://github.com/anthropics/skills) as a reference.
+
+```txt
+
+your-marketplace/                ← repository root
+├── .claude-plugin/
+│   └── marketplace.json         ← Marketplace definition (plugins declared here)
+├── skills/                      ← all skills go here
+│   └── hello/
+│       └── SKILL.md
+│   └── greet/
+│       └── SKILL.md
+├── .gitignore
+└── README.md
+```
+
+The most important file is `marketplace.json`, whose format is as follows:
+```json
+{
+  "name": "obsismc-marketplace", // your marketplace name
+  "owner": {
+    "name": "ObsisMc"
+  },
+  "metadata": {
+    "description": "A collection of agent skills by ObsisMc, compatible with Claude Code and other Agent Skills-compatible tools."
+  },
+  "plugins": [
+    {
+      "name": "test-skills",  // your plugin name
+      "source": "./",         // set the base path
+      "strict": false,
+      "description": "A collection of useful agent skills",
+      "skills": [
+        "./skills/hello",     // your skill paths
+        "./skills/greet"    
+      ]
+    }
+  ]
+}
+```
+Once pushed to GitHub, others can use your Marketplace, and your skill names will follow the pattern `/test-skills:hello`.
+
+
+### Other Tips
 
 Writing the README: **Focus on what the Skill produces, not how it works**
 
