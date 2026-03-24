@@ -239,6 +239,8 @@ The most important file is `marketplace.json`, whose format is as follows:
 ```
 Once pushed to GitHub, others can use your Marketplace, and your skill names will follow the pattern `/test-skills:hello`.
 
+> For the complete Marketplace setup process, see [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces#strict-mode)
+
 
 ### Other Tips
 
