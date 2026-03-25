@@ -1069,9 +1069,9 @@
 
 .post-toc-title {
     margin: 0;
-    font-family: var(--font-title);
+    font-family: var(--font-serif);
     font-size: 0.75rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
     color: #9aa3af;
 }
 
