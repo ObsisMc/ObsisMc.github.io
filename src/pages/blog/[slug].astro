@@ -191,9 +191,10 @@ const tocItems = headings.filter(h => h.depth <= 3);
     }, { passive: false });
   });
 
-  const toc = document.getElementById('postToc');
+  const toc = document.getElementById('postToc') as HTMLElement | null;
   const toggle = document.getElementById('tocToggle');
   if (toc && toggle) {
+    const tocEl = toc as HTMLElement;
     toggle.addEventListener('click', () => {
       const collapsed = toc.dataset.collapsed === 'true';
       toc.dataset.collapsed = String(!collapsed);
@@ -201,24 +202,41 @@ const tocItems = headings.filter(h => h.depth <= 3);
       toc.dataset.pinned = collapsed ? 'true' : 'false';
     });
 
-    // Active link on scroll
-    const links = toc.querySelectorAll('.toc-link');
+    // Active link on scroll — highlight the last heading that has passed the top threshold
+    const links = toc.querySelectorAll<HTMLAnchorElement>('.toc-link');
     const headingEls = Array.from(links).map(l => {
-      const id = (l as HTMLAnchorElement).href.split('#')[1];
+      const id = decodeURIComponent(l.href.split('#')[1] ?? '');
       return document.getElementById(id);
-    }).filter(Boolean) as HTMLElement[];
+    }).filter((el): el is HTMLElement => el !== null);
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          links.forEach(l => l.classList.remove('is-active'));
-          const id = entry.target.id;
-          const active = toc.querySelector(`.toc-link[href="#${id}"]`);
-          active?.classList.add('is-active');
+    const THRESHOLD = 120; // px from viewport top
+
+    const tocBody = tocEl.querySelector<HTMLElement>('.post-toc-body');
+
+    function updateActiveToc() {
+      let active: HTMLElement | null = null;
+      for (const el of headingEls) {
+        if (el.getBoundingClientRect().top <= THRESHOLD) {
+          active = el;
         }
-      });
-    }, { rootMargin: '-10% 0px -80% 0px' });
+      }
+      links.forEach(l => l.classList.remove('is-active'));
+      if (active) {
+        const activeLink = tocEl.querySelector<HTMLElement>(`.toc-link[href="#${active.id}"]`);
+        activeLink?.classList.add('is-active');
+        if (activeLink && tocBody) {
+          const linkTop = activeLink.offsetTop;
+          const linkBottom = linkTop + activeLink.offsetHeight;
+          const bodyTop = tocBody.scrollTop;
+          const bodyBottom = bodyTop + tocBody.clientHeight;
+          if (linkTop < bodyTop || linkBottom > bodyBottom) {
+            tocBody.scrollTo({ top: linkTop - tocBody.clientHeight / 2, behavior: 'smooth' });
+          }
+        }
+      }
+    }
 
-    headingEls.forEach(el => observer.observe(el));
+    window.addEventListener('scroll', updateActiveToc, { passive: true });
+    updateActiveToc();
   }
 </script>
