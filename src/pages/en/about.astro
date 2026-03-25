@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import Divider from "../../components/Divider.astro";
+import { SITE } from "../../config/site";
 ---
 
 <Base title="About" lang="en" altHref="/about">
@@ -30,27 +31,27 @@ import Divider from "../../components/Divider.astro";
                 font-size="42"
                 fill="rgba(255,255,255,0.92)"
                 filter="url(#text-erosion)"
-                class="seal-text select-none">豪</text
+                class="seal-text select-none">{SITE.sealChar}</text
               >
             </svg>
           </div>
 
           <div class="about-names">
-            <div class="about-name-primary">张睿豪</div>
+            <div class="about-name-primary">{SITE.nameZh}</div>
             <div
               class="about-name-secondary"
               style="font-family:var(--font-name-en); font-size:1.35rem; letter-spacing:0.02em;"
             >
-              Ray Zhang
+              {SITE.nameEn}
             </div>
           </div>
 
-          <p class="about-slogan">Systems, Data, Code, and Ideas</p>
+          <p class="about-slogan">{SITE.slogan}</p>
 
           <div class="about-social">
-            <!-- GitHub -->
+            {SITE.social.github && (
             <a
-              href="https://github.com/ObsisMc"
+              href={SITE.social.github}
               target="_blank"
               rel="noopener"
               class="social-icon"
@@ -64,9 +65,10 @@ import Divider from "../../components/Divider.astro";
                 ></path></svg
               >
             </a>
-            <!-- LinkedIn -->
+            )}
+            {SITE.social.linkedin && (
             <a
-              href="https://www.linkedin.com/in/ruihao-zhang/"
+              href={SITE.social.linkedin}
               target="_blank"
               rel="noopener"
               class="social-icon social-linkedin"
@@ -78,9 +80,10 @@ import Divider from "../../components/Divider.astro";
                 ></path></svg
               >
             </a>
-            <!-- Medium -->
+            )}
+            {SITE.social.medium && (
             <a
-              href="https://medium.com/@r9644360"
+              href={SITE.social.medium}
               target="_blank"
               rel="noopener"
               class="social-icon social-medium"
@@ -107,9 +110,10 @@ import Divider from "../../components/Divider.astro";
                   fill="#ffffff"></rect></svg
               >
             </a>
-            <!-- Substack -->
+            )}
+            {SITE.social.substack && (
             <a
-              href="https://substack.com/@rayzhang675112"
+              href={SITE.social.substack}
               target="_blank"
               rel="noopener"
               class="social-icon social-substack"
@@ -121,9 +125,10 @@ import Divider from "../../components/Divider.astro";
                 ></path></svg
               >
             </a>
-            <!-- Zhihu -->
+            )}
+            {SITE.social.zhihu && (
             <a
-              href="https://www.zhihu.com/people/0000-26-60"
+              href={SITE.social.zhihu}
               target="_blank"
               rel="noopener"
               class="social-icon social-zhihu"
@@ -135,6 +140,7 @@ import Divider from "../../components/Divider.astro";
                 ></path></svg
               >
             </a>
+            )}
           </div>
 
           <!-- Contact form -->
@@ -156,7 +162,7 @@ import Divider from "../../components/Divider.astro";
               <Divider class="my-6" />
               <form
                 class="space-y-4"
-                action="https://formsubmit.co/f97d0a44c26199a38bf41eaec175931d"
+                action={`https://formsubmit.co/${SITE.formsubmitToken}`}
                 method="POST"
                 style="display:flex; flex-direction:column; gap:1rem;"
               >

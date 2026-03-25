@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SITE } from '../config/site';
 
 interface Props {
   title?: string;
@@ -8,10 +9,9 @@ interface Props {
   altHref?: string;
 }
 const { title, isPost = false, lang = 'zh', altHref } = Astro.props;
-const siteTitle = lang === 'zh' ? '张睿豪' : 'Ray Zhang';
+const siteTitle = lang === 'zh' ? SITE.nameZh : SITE.nameEn;
 const switchHref = altHref ?? (lang === 'zh' ? '/en/' : '/');
-const siteOrigin = 'https://ruihaozhang.com';
-const canonicalURL = new URL(Astro.url.pathname, siteOrigin).href;
+const canonicalURL = new URL(Astro.url.pathname, SITE.origin).href;
 // For hreflang: current page is canonical for its own lang, altHref is the other lang's URL
 const zhHref = lang === 'zh' ? Astro.url.pathname : (altHref ?? '/');
 const enHref = lang === 'en' ? Astro.url.pathname : (altHref ?? '/en/');
@@ -24,20 +24,20 @@ const enHref = lang === 'en' ? Astro.url.pathname : (altHref ?? '/en/');
   <title>{title ? `${title} | ${siteTitle}` : siteTitle}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="canonical" href={canonicalURL} />
-  <link rel="alternate" hreflang="zh-CN" href={`${siteOrigin}${zhHref}`} />
-  <link rel="alternate" hreflang="en" href={`${siteOrigin}${enHref}`} />
-  <link rel="alternate" hreflang="x-default" href={`${siteOrigin}/`} />
+  <link rel="alternate" hreflang="zh-CN" href={`${SITE.origin}${zhHref}`} />
+  <link rel="alternate" hreflang="en" href={`${SITE.origin}${enHref}`} />
+  <link rel="alternate" hreflang="x-default" href={`${SITE.origin}/`} />
   <!-- Anti-flash: apply dark class before first paint -->
   <script is:inline>
     (function(){try{var s=localStorage.getItem('theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(s===null&&d))document.documentElement.classList.add('dark');}catch(e){}})();
   </script>
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWVSG2MS4Y"></script>
-  <script>
+  <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.googleAnalyticsId}`}></script>
+  <script is:inline define:vars={{ gaId: SITE.googleAnalyticsId }}>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-VWVSG2MS4Y');
+    gtag('config', gaId);
   </script>
   {isPost && (
     <>
@@ -120,7 +120,7 @@ const enHref = lang === 'en' ? Astro.url.pathname : (altHref ?? '/en/');
     <div class="mt-4 text-center">
       <p class="text-footnote tracking-note text-slate-400/70 font-light select-none"
          style="font-family:var(--font-title);">
-        白は、余白の名。
+        {SITE.tagline}
       </p>
     </div>
   </div>

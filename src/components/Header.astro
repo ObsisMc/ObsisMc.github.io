@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { SITE } from "../config/site";
 
 interface Props {
   lang?: "zh" | "en";
@@ -41,14 +42,14 @@ const nav =
           {
             lang === "zh" ? (
               <a href="/" style="text-decoration:none; color:inherit;">
-                张睿豪
+                {SITE.nameZh}
               </a>
             ) : (
               <a
                 href="/en/"
                 style="text-decoration:none; color:inherit; font-family:var(--font-name-en); font-size:0.85em; letter-spacing:0.01em;"
               >
-                Ray Zhang
+                {SITE.nameEn}
               </a>
             )
           }
@@ -83,9 +84,10 @@ const nav =
           </svg>
           <span>RSS</span>
         </a>
+        {SITE.social.github && (
         <a
           class="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200/80 bg-slate-50/50 text-xs tracking-wide text-slate-500 hover:bg-white hover:text-slate-800 hover:border-slate-300 hover:shadow-xs transition-all duration-300"
-          href="https://github.com/ObsisMc"
+          href={SITE.social.github}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -106,6 +108,7 @@ const nav =
           </svg>
           <span>GitHub</span>
         </a>
+        )}
       </div>
     </div>
   </div>

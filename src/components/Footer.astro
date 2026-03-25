@@ -1,11 +1,12 @@
 ---
+import { SITE } from "../config/site";
 const year = new Date().getFullYear();
 ---
 <footer class="section-divider text-center text-sm text-slate-500 leading-relaxed">
-  <p>&copy; <span style="font-variant-numeric:oldstyle-nums;">{year}</span> 张睿豪</p>
+  <p>&copy; <span style="font-variant-numeric:oldstyle-nums;">{year}</span> {SITE.nameZh}</p>
   <p style="font-family:var(--font-eng); font-size:0.7rem; letter-spacing:0.05em; margin-top:0.25rem; opacity:0.9;">
     Inspired by <a href="https://github.com/Acris/hexo-theme-shiro" target="_blank" rel="noopener noreferrer" class="link-muted">Shiro</a>
-    · Made by <a href="https://github.com/ObsisMc" target="_blank" rel="noopener noreferrer" class="link-muted">ObsisMc</a>
+    · Made by <a href={SITE.social.github} target="_blank" rel="noopener noreferrer" class="link-muted">ObsisMc</a>
     with <span aria-label="love" title="love">❤️</span>
   </p>
 </footer>

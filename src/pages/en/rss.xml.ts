@@ -2,6 +2,7 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { getPostSlug } from '../../utils/slug';
 import type { APIContext } from 'astro';
+import { SITE } from '../../config/site';
 
 export async function GET(context: APIContext) {
   const posts = (await getCollection('blog'))
@@ -9,8 +10,8 @@ export async function GET(context: APIContext) {
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   return rss({
-    title: '白夜書簡 (EN)',
-    description: 'Systems, Data, Code, and Ideas',
+    title: SITE.rssTitleEn,
+    description: SITE.rssDescription,
     site: context.site!,
     items: posts.map(post => ({
       title: post.data.title,
