@@ -1,10 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import Divider from '../../components/Divider.astro';
-import { getPostSlug } from '../../utils/slug';
+import PostListPage from '../../components/PostListPage.astro';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog')).filter(p => p.id.startsWith('zh/'));
@@ -25,29 +21,9 @@ export async function getStaticPaths() {
 
 const { tag, posts } = Astro.props;
 ---
-<Base title={`Tags: ${tag}`}>
-  <Header />
-  <main class="section-divider">
-    <section class="section-shell">
-      <header class="section-header">
-        <h1 class="section-title">Tags: {tag}</h1>
-        <Divider />
-      </header>
-      <div style="max-width:42rem; margin:0 auto;">
-        {posts.map((post: any) => (
-          <article class="archive-item group" style="padding:0.4rem 0;">
-            <time datetime={post.data.date.toISOString().slice(0,10)} class="archive-date">
-              {post.data.date.toISOString().slice(0,10).replace(/-/g,'/')}
-            </time>
-            <h3 style="font-size:1rem; font-weight:400; margin:0;">
-              <a href={`/blog/${getPostSlug(post)}`} class="archive-title link-underline">
-                {post.data.title}
-              </a>
-            </h3>
-          </article>
-        ))}
-      </div>
-    </section>
-  </main>
-  <Footer />
-</Base>
+<PostListPage
+  lang="zh"
+  title={`Tags: ${tag}`}
+  posts={posts}
+  altHref={`/en/tags/${encodeURIComponent(tag)}`}
+/>
