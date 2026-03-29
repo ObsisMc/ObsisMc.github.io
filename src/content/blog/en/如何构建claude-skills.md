@@ -3,17 +3,16 @@ categories: [AI-native Coding]
 date: 2026-03-18 14:18:09.160000+00:00
 draft: false
 excerpt: Claude Skills is a mechanism for teaching Claude automated workflows through
-  structured files (SKILL.md plus optional scripts, reference docs, and more). This
-  article covers the file structure and design principles of a Skill, how to test
-  trigger behavior and functionality, and how to distribute and share Skills with
-  others.
-fmContentType: blog-en
+  structured files (SKILL.md and optional scripts, reference docs, etc.). This post
+  covers Skill file structure and design principles, how to test trigger timing and
+  functionality, and how to distribute and share Skills with others.
+fmContentType: blog-zh
 path_name: build-claude-skill
 tags: [AI-native Coding]
 title: How to Build Claude Skills
 ---
 
-This article is a set of notes based on Claude's [The-Complete-Guide-to-Building-Skill-for-Claude](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf).
+This post is a set of notes on Claude's [The-Complete-Guide-to-Building-Skill-for-Claude](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf).
 
 ## Fundamentals
 
@@ -26,23 +25,23 @@ A Skill is primarily composed of the following files and folders:
 
 ### Progressive Disclosure
 
-- Layer 1 — YAML frontmatter: The YAML block at the top of SKILL.md describes the skill's name, description, and other metadata; Claude checks this first.
-- Layer 2 — SKILL.md body: If Claude determines the first layer matches the current task, it reads the rest of SKILL.md.
-- Layer 3 — Additional files: If needed, Claude reads other files such as those in references/ and assets/.
+- **Layer 1 — YAML frontmatter:** The YAML block at the top of SKILL.md describes the skill's name, description, and other metadata. Claude checks this first.
+- **Layer 2 — SKILL.md body:** If Claude determines that layer 1 matches the current task, it reads the rest of SKILL.md.
+- **Layer 3 — Additional files:** If needed, Claude reads files in `references/`, `assets/`, and so on.
 
-### Relationship Between MCP and Skills
+### The Relationship Between MCP and Skills
 
 ![mcp_skill](/如何构建claude-skills/mcp_skill.png)
 
-MCP provides the tools, while Skills tell the AI which tools to use to automate a workflow.
+MCP provides tools, while Skills tell the AI which tools to use and how to automate a workflow.
 
-## Planning and design
+## Planning and Design
 
-How to design a Skill.
+How to design a skill.
 
 Start by thinking through:
 - What task needs to be accomplished
-- What steps the workflow involves
+- What steps are involved (the workflow)
 - What tools are required
 - What domain knowledge or best practices are needed
 
@@ -61,7 +60,7 @@ your-skill-name/
  └── report-template.md # Example
 ```
 
-README.md must not be placed inside the skill folder.
+There must be no README.md inside the skill folder.
 
 ### SKILL.md
 
@@ -75,21 +74,21 @@ phrases].
 ```
 
 Fields:
-- name (required): kebab-case only; must match the folder name
-- description (required):
+- **name** (required): kebab-case only; must match the folder name
+- **description** (required):
     - What the skill does
-    - When to trigger it
-- compatibility (optional): Describes environment requirements, etc.
-- metadata (optional): Describes the author and other metadata
+    - When it should trigger
+- **compatibility** (optional): Describes environment requirements, etc.
+- **metadata** (optional): Describes the author, etc.
     - ```yaml
         metadata:
             author: ProjectHub
             version: 1.0.0 mcp-server: projecthub 
       ```
-- license (optional): Open-source license
+- **license** (optional): Open-source license
 
 
-**How to write the description**
+**How to write a good description**
 
 Format: `[What it does] + [When to use it] + [Key capabilities]`
 
@@ -108,25 +107,25 @@ systems.
 
 ```
 
-You can refer to the following Skill examples for guidance:
+You can refer to the following real-world skill examples for reference:
 - [Skill Creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) 
 - [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
 - [sentry](https://github.com/getsentry/sentry-for-ai/tree/main/skills)
 
 
-## Testing and iteration
+## Testing and Iteration
 
-This section covers how to test and iterate on your Skills. It is recommended to use the [Skill Creator skill](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) to generate your own Skill.
+This section covers how to test and iterate on your skills. It is recommended to use the [Skill Creator skill](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) to generate your own skill.
 
 
 There are three main areas to test:
 - Trigger timing
-- Functional behavior
+- Functionality
 - Performance
 
 ### Trigger Timing Tests
 
-The goal is to observe whether the Skill triggers at the right time. Test cases fall into two categories: requests that should trigger the Skill, and requests that should not. Examples:
+The goal is to observe whether the skill fires at the right moment. Test cases should cover two types of user requests: those that should trigger the skill and those that should not. For example:
 
 ```text
 Should trigger:
@@ -140,17 +139,17 @@ Should NOT trigger:
 sheets)
 ```
 
-### Functional Tests
+### Functionality Tests
 
-Verify that the Skill can complete its intended task. Key things to observe:
-- Whether the output is correct
+Verify that the skill can actually complete its intended task. Key things to observe:
+- Whether outputs are correct
 - Whether API calls succeed
 - Error handling
-- Coverage of edge cases
+- Edge case coverage
 
 ### Performance Tests
 
-Non-functional metrics to evaluate, for example:
+Non-functional metrics such as the following:
 
 ```text
 Without skill:
@@ -167,44 +166,43 @@ With skill:
 
 ```
 
-A Skill still needs to be continuously iterated upon — fix and update the instructions for every failure until it reaches a high level of quality.
+A skill needs continuous iteration — only by fixing mistakes and refining the instructions each time something goes wrong can it reach a polished state.
 
 
-## Distribution and sharing
+## Distribution and Sharing
 
-How to use others' Skills and share your own.
+How to use someone else's skill and how to share your own.
 
-### The Manual Way
+### The Manual Approach
 
-- Acquiring Skills:
-    - Download the skill folder or archive from online sources such as GitHub
-    - Write your own locally
-- Using Skills:
-    - Locally: place the Skill in `.claude/skills/` under the current project or user directory
-    - Claude.ai: upload via Settings > Capabilities > Skills
+- **Obtaining a skill:**
+    - Download the skill folder or archive from somewhere like GitHub
+    - Write one yourself locally
+- **Using a skill:**
+    - Locally: place the skill folder under `.claude/skills/` in your current project or home directory
+    - Claude web: upload to Claude.ai via Settings > Capabilities > Skills
+
+### Automated: Plugins & Marketplace
+
+**Obtaining and using skills**
+
+To use skills via the Claude Code VS Code UI:
+1. First add a Marketplace: `show command menu → Manage plugins → Marketplaces → Add`
+2. Then install a plugin from that Marketplace: `Manage plugins → Plugins` — search for or select the plugin you want and install it
 
 
-### Automated: Plugin & Marketplace
+**Sharing your own skills**
 
-**Getting and using Skills**
+Set up your own Marketplace to share your skills with others.
 
-To use Skills via the Claude Code VS Code UI:
-1. First add a Marketplace: `show command menu -> Manage plugins -> Marketplaces -> Add`
-2. Then install plugins from that Marketplace: `Manage plugins -> Plugins` — search for or select the plugin you want and install it
-
-
-**Sharing your own Skills**
-
-Set up your own Marketplace to share your Skills with others.
-
-The simplest approach is shown below. Keep the folder structure consistent — plugins are declared implicitly in `marketplace.json` (so there is no need to create a separate folder for each plugin). You can refer to [anthropics/skills](https://github.com/anthropics/skills) as a reference.
+The simplest approach is shown below. The folder structure must be kept consistent. Plugins are implicitly declared inside `marketplace.json` (so you do not need to create a separate folder for each plugin). See [anthropics/skills](https://github.com/anthropics/skills) as a reference.
 
 ```txt
 
 your-marketplace/                ← repository root
 ├── .claude-plugin/
 │   └── marketplace.json         ← Marketplace definition (plugins declared here)
-├── skills/                      ← all skills go here
+├── skills/                      ← all skills live here
 │   └── hello/
 │       └── SKILL.md
 │   └── greet/
@@ -213,7 +211,7 @@ your-marketplace/                ← repository root
 └── README.md
 ```
 
-The most important file is `marketplace.json`, whose format is as follows:
+The most important file is `marketplace.json`. Its format is as follows:
 ```json
 {
   "name": "obsismc-marketplace", // your marketplace name
@@ -230,21 +228,23 @@ The most important file is `marketplace.json`, whose format is as follows:
       "strict": false,
       "description": "A collection of useful agent skills",
       "skills": [
-        "./skills/hello",     // your skill paths
+        "./skills/hello",     // your skill path
         "./skills/greet"    
       ]
     }
   ]
 }
 ```
-Once pushed to GitHub, others can use your Marketplace, and your skill names will follow the pattern `/test-skills:hello`.
+Once pushed to GitHub, others can use your Marketplace. Your skill's fully qualified name will be `/test-skills:hello`.
+
+To test the plugin locally, run `claude --plugin-dir .` to load the current directory as a plugin.
 
 > For the complete Marketplace setup process, see [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces#strict-mode)
 
 
-### Other Tips
+### Additional Tips
 
-Writing the README: **Focus on what the Skill produces, not how it works**
+Writing a README: **focus on what the skill produces, not what it does internally**
 
 ✅ Good:
 ```text
@@ -267,6 +267,6 @@ Together, they enable AI-powered project management."
 ```
 
 
-## Patterns and troubleshooting
+## Patterns and Troubleshooting
 
-Refer to the original document when you encounter specific issues.
+Refer to the original document; revisit this section when you actually encounter an issue.
