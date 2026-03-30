@@ -12,7 +12,7 @@ title: Git常用命令工具书
 
 ## pull
 
-#### 拉取本地没有的分支
+### 拉取本地没有的分支
 从远程pull本地没有的分支，同时关联本地分支与远程分支，然后切换到该分支：
 
 ```shell
@@ -27,7 +27,7 @@ git checkout <remote_branch>
 
 ## push
 
-#### 关联分支并推送
+### 关联分支并推送
 push 本地分支 到 远程分支（如果远程没有该分支则自动创建一个），且将本地分支与远程分支关联起来：
 ```shell
 // 本地分支和远程分支名一样
@@ -37,7 +37,7 @@ git push -u <remote_name> <branch>
 
 ## branch
 
-#### 删除分支
+### 删除分支
 
 ```shell
 // 删除本地分支
@@ -52,7 +52,7 @@ git push <remote_name> --delete <branch_name>
 
 ## rebase
 
-#### 修复历史中某个commit
+### 修复历史中某个commit
 
 ```shell
 // 1. 找到需要修改的commit_id，然后执行交互式rebase
@@ -70,7 +70,7 @@ git rebase --continue
 
 ## submodule
 
-#### 给仓库添加子模块
+### 给仓库添加子模块
 ```shell
 // 将远程其他仓库作为子模块添加到当前仓库中（可以指定保存路径local_path），local_path下面就是源代码，不会再套一层仓库名
 git submodule add <remote_repository_url> [<local_path>]
@@ -80,14 +80,39 @@ git add .gitmodules <local_path>
 git commit -m "Add submodule"
 ```
 
-#### 初始化 submodule
-```shell
-// pull主仓库的同时初始化submodule
-git pull --recurse-submodules
+### 拉取/更新 submodule
 
-// submodule没拉取得情况初始化所有submodule
-git submodule update --init --recursive
+> ❗submodule有两个重要的commit hash
+> - 主项目记录的submodule版本
+> - submodule远程仓库本身的最新版本
+
+
+
+Pull默认不拉取/不初始化子模块，需要添加参数才会拉取
+```shell
+// 拉取主项目记录的submodule
+git pull --recurse-submodules
 ```
+
+常用的还是手动更新，如下
+
+```shell
+// 以主项目记录的hash为准，更新到该commit
+// 但是会跳过没初始化的submodule
+git submodule update
+
+// 以主项目记录的hash为准，更新到该commit
+// 没初始化的submodule会被初始化并更新
+git submodule update --init
+
+// 同时更新嵌套的submodule
+git submodule update --recursive
+
+// 以子模块远程最新为准，忽略主项目记录的 hash
+git submodule update --remote
+```
+
+❗每次更新子模块（submodule在主项目中的hash变了）后，一定记得要在主项目中commit这次commit hash的变化。
 
 
 #### 更新 submodule

@@ -12,7 +12,7 @@ A collection of frequently used Git commands for quick reference.
 
 ## pull
 
-#### Fetch a branch that doesn't exist locally
+### Fetch a branch that doesn't exist locally
 Fetch a remote branch that you don't have locally, associate it with a new local branch, and switch to it:
 
 ```shell
@@ -27,7 +27,7 @@ git checkout <remote_branch>
 
 ## push
 
-#### Link a branch and push
+### Link a branch and push
 Push a local branch to a remote branch (automatically creating the remote branch if it doesn't exist), and set up tracking between them:
 ```shell
 // when the local and remote branch names are the same
@@ -37,7 +37,7 @@ git push -u <remote_name> <branch>
 
 ## branch
 
-#### Delete a branch
+### Delete a branch
 
 ```shell
 // delete a local branch
@@ -52,7 +52,7 @@ git push <remote_name> --delete <branch_name>
 
 ## rebase
 
-#### Edit a specific commit in history
+### Edit a specific commit in history
 
 ```shell
 // 1. Find the commit_id you want to modify, then start an interactive rebase
@@ -70,7 +70,7 @@ git rebase --continue
 
 ## submodule
 
-#### Add a submodule to a repository
+### Add a submodule to a repository
 ```shell
 // Add another remote repository as a submodule to the current repo (you can specify a local_path); the source code will be placed directly under local_path without an extra layer of the repo name
 git submodule add <remote_repository_url> [<local_path>]
@@ -80,14 +80,40 @@ git add .gitmodules <local_path>
 git commit -m "Add submodule"
 ```
 
-#### Initialize a submodule
-```shell
-// Initialize submodules at the same time as pulling the main repository
-git pull --recurse-submodules
+### Fetch/Update a submodule
 
-// If submodules were not pulled, initialize all submodules manually
-git submodule update --init --recursive
+> ❗There are two important commit hashes to be aware of with submodules:
+> - The submodule version recorded by the main project
+> - The latest version on the submodule's own remote repository
+
+
+
+`git pull` does not fetch or initialize submodules by default — you need to pass extra flags:
+```shell
+// Pull the submodule version recorded by the main project
+git pull --recurse-submodules
 ```
+
+More commonly, you'll update submodules manually:
+
+```shell
+// Update to the commit hash recorded by the main project
+// skips submodules that havent been init
+git submodule update
+
+// Update to the commit hash recorded by the main project
+// (initializes any uninitialized submodules before updating)
+git submodule update --init
+
+// Also update nested submodules
+git submodule update --recursive
+
+// Update to the latest remote version of each submodule,
+// ignoring the hash recorded by the main project
+git submodule update --remote
+```
+
+❗After updating a submodule (i.e., its hash in the main project has changed), always remember to commit that hash change in the main project.
 
 
 #### Update a submodule
