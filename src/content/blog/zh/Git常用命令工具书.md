@@ -113,9 +113,3 @@ git submodule update --remote
 ```
 
 ❗每次更新子模块（submodule在主项目中的hash变了）后，一定记得要在主项目中commit这次commit hash的变化。
-
-
-#### 更新 submodule
-```shell
-git submodule update --remote
-```

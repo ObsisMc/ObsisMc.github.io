@@ -114,9 +114,3 @@ git submodule update --remote
 ```
 
 ❗After updating a submodule (i.e., its hash in the main project has changed), always remember to commit that hash change in the main project.
-
-
-#### Update a submodule
-```shell
-git submodule update --remote
-```
