@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import { getPostSlug } from '../utils/slug';
+import { getGitLastModified } from '../utils/lastModified';
 
 interface Props {
   lang: 'zh' | 'en';
@@ -20,6 +21,12 @@ const prefix = lang === 'en' ? '/en' : '';
 const tocLabel = lang === 'zh' ? '目录' : 'Contents';
 const giscusLang = lang === 'zh' ? 'zh-CN' : 'en';
 const postSlug = getPostSlug(post);
+
+const lastModified = getGitLastModified(post.id);
+const showUpdated = lastModified &&
+  lastModified.getTime() > post.data.date.getTime() + 86_400_000;
+const updatedLabel = lang === 'zh' ? '更新于' : 'Updated';
+const fmtDate = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, '/');
 ---
 <Base title={post.data.title} isPost={true} lang={lang} altHref={altHref}>
   <Header lang={lang} />
@@ -43,8 +50,19 @@ const postSlug = getPostSlug(post);
             <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span style="font-variant-numeric:oldstyle-nums;">{post.data.date.toISOString().slice(0,10).replace(/-/g,'/')}</span>
+            <span style="font-variant-numeric:oldstyle-nums;">{fmtDate(post.data.date)}</span>
           </div>
+          {showUpdated && (
+            <>
+              <span class="text-slate-300" aria-hidden="true">•</span>
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                <span style="font-variant-numeric:oldstyle-nums;">{updatedLabel} {fmtDate(lastModified!)}</span>
+              </div>
+            </>
+          )}
         </div>
       </header>
 
