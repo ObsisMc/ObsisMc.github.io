@@ -237,6 +237,8 @@ your-marketplace/                ← 仓库根目录
 ```
 Push到Gitub后，别人就能用你的Marketplace了，你的skill名字最终为 `/test-skills:hello`。
 
+本地测试该plugin，使用 `claude --plugin-dir .` 就能把当前目录加载为plugin.
+
 > 完整的Marketplace搭建流程见[Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces#strict-mode)
 
 
