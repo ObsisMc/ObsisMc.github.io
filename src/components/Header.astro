@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import { SITE } from "../config/site";
+import { getGitLastModifiedAll } from "../utils/lastModified";
 
 interface Props {
   lang?: "zh" | "en";
@@ -8,13 +8,8 @@ interface Props {
 const { lang = "zh" } = Astro.props;
 const prefix = lang === "en" ? "/en" : "";
 
-const posts = await getCollection("blog");
-const lastPost = posts.sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-)[0];
-const lastUpdated = lastPost
-  ? lastPost.data.date.toISOString().slice(0, 10)
-  : "";
+const lastModifiedDate = getGitLastModifiedAll();
+const lastUpdated = lastModifiedDate ? lastModifiedDate.toISOString().slice(0, 10) : "";
 
 const nav =
   lang === "zh"
