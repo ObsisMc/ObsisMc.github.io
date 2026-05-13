@@ -1,3 +1,8 @@
+---
+{
+  "title": "{{title}}"
+}
+---
 {
   "$schema": "https://frontmatter.codes/frontmatter.schema.json",
   "frontMatter.framework.id": "astro",
@@ -20,8 +25,8 @@
       ]
     },
     {
-      "title": "Notes",
-      "path": "[[workspace]]/src/content/notes",
+      "title": "Notes (ZH)",
+      "path": "[[workspace]]/src/content/notes/zh",
       "contentTypes": [
         "notes"
       ]
