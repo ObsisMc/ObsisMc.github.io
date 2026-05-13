@@ -2,7 +2,7 @@
 title: AI时代要学会输出
 date: 2026-05-13T02:58:47.464Z
 tags: []
-draft: true
+draft: false
 fmContentType: notes
 ---
 
