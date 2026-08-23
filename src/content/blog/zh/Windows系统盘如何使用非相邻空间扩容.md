@@ -2,10 +2,8 @@
 title: Windows系统盘如何使用非相邻空间扩容
 path_name: windows-system-disk-extend
 date: 2026-03-04 20:45:22
-categories:
-    - Misc
-tags:
-    - Misc
+categories: [操作系统]
+tags: [操作系统, Windows, 存储]
 draft: false
 ---
 

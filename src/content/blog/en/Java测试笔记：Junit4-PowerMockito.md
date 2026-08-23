@@ -1,10 +1,10 @@
 ---
-categories:
-- Java
+categories: [Java]
 date: 2026-02-27 23:53:22
 draft: false
 excerpt: This article systematically covers the core techniques for unit testing with JUnit4 + PowerMockito, including the AAA test steps, reflection-based access to private members, static method verification, spy stubbing, constructor interception, and practical argument matcher usage — a quick reference for Java testing.
 path_name: java-test-junit4-powerMockito
+tags: [Java, Testing]
 title: "Java Testing Notes: JUnit4 + PowerMockito"
 ---
 

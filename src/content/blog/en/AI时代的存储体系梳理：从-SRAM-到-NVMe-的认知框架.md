@@ -1,10 +1,10 @@
 ---
-categories:
-- Computer Organization and Architecture
+categories: [Computer Organization and Architecture]
 date: 2026-02-02 21:38:55
 draft: false
 excerpt: From registers to NVMe SSDs, this article systematically maps the complete storage hierarchy of the AI era — SRAM forms the high-speed CPU cache, the DRAM family (DDR/LPDDR/GDDR/HBM) covers memory needs from mobile devices to AI accelerators, while NAND Flash and magnetic disks underpin SSD and HDD persistent storage respectively, with PCIe/SATA/SAS interfaces and NVMe/SCSI protocols closing the loop across the entire hierarchy.
 path_name: ai-era-storage-hierarchy-from-sram-to-nvme
+tags: [Computer Organization and Architecture, Storage]
 title: "Storage Hierarchy in the AI Era: A Conceptual Framework from SRAM to NVMe"
 ---
 

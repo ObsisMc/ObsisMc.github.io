@@ -1,11 +1,11 @@
 ---
-categories:
-- Java
+categories: [Java]
 date: 2026-02-27 23:53:22
 draft: false
 excerpt: 本文系统梳理了使用 JUnit4 + PowerMockito 进行单元测试的核心技巧，涵盖 AAA 测试步骤、反射访问私有成员、静态方法验证、spy
   打桩、构造拦截及参数匹配器的实用写法，是 Java 测试实践的快速参考手册。
 path_name: java-test-junit4-powerMockito
+tags: [Java, 测试]
 title: Java测试笔记：Junit4+PowerMockito
 ---
 

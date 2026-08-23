@@ -39,7 +39,14 @@ while IFS= read -r zh; do
     errors=1
   fi
 
-  tags=$(printf '%s\n' "$fm" | grep -m1 '^tags:' | sed 's/^tags:[[:space:]]*//' | tr -d "[:space:]")
+  # tags may be inline (`tags: [a, b]`) or a block list whose items are
+  # indented on following lines — Front Matter CMS writes the latter form.
+  # Accept both; a naive same-line grep would false-warn on block lists.
+  tags=$(printf '%s\n' "$fm" | awk '
+    /^tags:/ { v = $0; sub(/^tags:[ \t]*/, "", v); intags = 1; next }
+    intags && /^[ \t]*- / { items = items $0; next }
+    intags { intags = 0 }
+    END { gsub(/[ \t]/, "", v); print v items }')
   if [ -z "$tags" ] || [ "$tags" = "[]" ]; then
     echo "  warn   $base — tags is empty; the post will not appear under /tags"
     warns=1

@@ -1,6 +1,5 @@
 ---
-categories:
-- Misc
+categories: [Operating Systems]
 date: 2026-03-03 23:53:22
 draft: false
 excerpt: On a Windows 11 + Ubuntu dual-boot setup, you can cleanly remove Linux and
@@ -10,6 +9,7 @@ excerpt: On a Windows 11 + Ubuntu dual-boot setup, you can cleanly remove Linux 
 path_name: delete-linux
 tag:
 - Misc
+tags: [Operating Systems, Windows, Linux]
 title: How to Remove Linux from a Windows/Linux Dual-Boot System
 ---
 

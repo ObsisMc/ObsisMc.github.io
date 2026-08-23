@@ -2,10 +2,8 @@
 title: How to Expand the Windows System Drive Using Non-Adjacent Space
 path_name: windows-system-disk-extend
 date: 2026-03-04 20:45:22
-categories:
-    - Misc
-tags:
-    - Misc
+categories: [Operating Systems]
+tags: [Operating Systems, Windows, Storage]
 draft: false
 ---
 

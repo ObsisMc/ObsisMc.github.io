@@ -3,8 +3,8 @@ date: 2026-02-01 11:57:20
 draft: false
 excerpt: This article compiles the most commonly used Git commands for day-to-day development, covering branch management, remote pushing, interactive rebase for editing commit history, and submodule operations including adding, initializing, and updating — a handy quick-reference guide.
 path_name: git-common-commands
-categories:
-- Git
+categories: [Git]
+tags: [Git, Version Control]
 title: Git Common Commands Reference
 ---
 

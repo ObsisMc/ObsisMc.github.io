@@ -1,6 +1,5 @@
 ---
-categories:
-- Misc
+categories: [操作系统]
 date: 2026-03-03 23:53:22
 draft: false
 excerpt: 在 Windows 11 + Ubuntu 双系统环境下，通过恢复 Windows EFI 引导、使用磁盘管理或 diskpart 强制删除 Linux
@@ -8,6 +7,7 @@ excerpt: 在 Windows 11 + Ubuntu 双系统环境下，通过恢复 Windows EFI �
 path_name: delete-linux
 tag:
 - Misc
+tags: [操作系统, Windows, Linux]
 title: Windows/Linux双系统删除Linux教程
 ---
 

@@ -3,8 +3,8 @@ date: 2026-02-01 11:57:20
 draft: false
 excerpt: 本文整理了 Git 日常开发中最常用的命令，涵盖分支管理、远程推送、交互式 rebase 修改历史提交，以及子模块的添加、初始化与更新操作，适合作为快速查阅的实用参考手册。
 path_name: git-common-commands
-categories:
-- Git
+categories: [Git]
+tags: [Git, 版本控制]
 title: Git常用命令工具书
 ---
 

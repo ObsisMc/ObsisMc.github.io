@@ -1,12 +1,12 @@
 ---
-categories:
-- 计算机组成原理
+categories: [计算机组成原理]
 date: 2026-02-02 21:38:55
 draft: false
 excerpt: 从寄存器到 NVMe SSD，本文系统梳理了 AI 时代完整的存储体系：SRAM 构成高速 CPU 缓存，DRAM 家族（DDR/LPDDR/GDDR/HBM）覆盖从移动端到
   AI 加速器的内存需求，NAND Flash 与磁盘则分别支撑 SSD 和 HDD 的持久化存储，并配以 PCIe/SATA/SAS 接口与 NVMe/SCSI
   协议完成整个层次结构的闭环。
 path_name: ai-era-storage-hierarchy-from-sram-to-nvme
+tags: [计算机组成原理, 存储]
 title: AI时代的存储体系梳理：从 SRAM 到 NVMe 的认知框架
 ---
 
