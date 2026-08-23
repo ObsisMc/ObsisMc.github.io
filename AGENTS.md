@@ -140,17 +140,39 @@ src/
     slug.ts        # getPostSlug() — path_name > filename fallback
 .github/
   workflows/
-    deploy.yml     # Push to main → build → deploy to GitHub Pages
+    deploy.yml     # INERT here (Actions disabled on iBlog-astro) — the live
+                   # copy of this workflow runs in the ObsisMc.github.io repo
 public/
   favicon.svg
   # Post image asset folders (copied from Hexo)
-astro.config.mjs   # site: https://ObsisMc.github.io, output: static, image: noop, tailwindcss vite plugin
+astro.config.mjs   # site: https://ruihaozhang.com, output: static, image: noop, tailwindcss vite plugin
 package.json
 ```
 
+## Publishing
+
+Two GitHub repos share one history; `iBlog-astro` is for authoring,
+`ObsisMc.github.io` is what actually goes live. Keep them as two steps —
+pushing to `origin` must NOT publish, so that unfinished work can be pushed
+freely.
+
+| Remote | Repo | Role |
+| --- | --- | --- |
+| `origin` | `ObsisMc/iBlog-astro` | Authoring. GitHub Actions is **disabled**, Pages is **not enabled** — pushing here publishes nothing. |
+| `githubio` | `ObsisMc/ObsisMc.github.io` | Publishing. Its own copy of `deploy.yml` builds on every push to `main` and serves `https://ruihaozhang.com` (custom domain, HTTPS enforced). |
+
+```bash
+git push origin main   # save work — does not publish
+npm run publish        # git push githubio main -> builds, live in ~40s
+```
+
+`.github/workflows/deploy.yml` in this repo is therefore inert. Do not
+"fix" it by enabling Actions here without first deciding which repo owns
+the deploy — running both would race two builds onto the same domain.
+
 ## Known Decisions & Gotchas
 
-- **No `base` in astro.config** — GitHub Pages deployment works without it since we deploy to a custom domain or user/org page. If deploying to a project page (`ObsisMc.github.io/iBlog-astro`), add `base: '/iBlog-astro'` back to `astro.config.mjs` and update the deploy workflow accordingly.
+- **No `base` in astro.config** — not needed: the site is served from the root of a custom domain (`ruihaozhang.com`). Only a project-page deploy (`ObsisMc.github.io/iBlog-astro`) would need `base: '/iBlog-astro'`.
 - **Image service: noop** — Astro's image optimizer is disabled (`astro/assets/services/noop`) because migrated posts use relative image paths that Astro can't resolve at build time. Post images are served from `public/`.
 - **Relative image paths fixed** — All `./FolderName/img` references in zh posts were rewritten to `/FolderName/img` (absolute) in the copies under `src/content/blog/zh/`. The originals in `../iBlog/` are untouched.
 - **Astro 5 content schema** — `passthrough()` does not reliably expose extra fields at runtime. Extra Hexo frontmatter fields must be explicitly declared in the schema (even as `z.any()`) to be accessible.

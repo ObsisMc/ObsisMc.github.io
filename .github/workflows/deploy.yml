@@ -1,3 +1,17 @@
+# This file lives in two repos that share one history, and it is active in
+# only one of them:
+#
+#   ObsisMc/ObsisMc.github.io  -> ACTIVE. Runs on every push to main and
+#                                 serves https://ruihaozhang.com.
+#   ObsisMc/iBlog-astro        -> dormant. Actions is disabled and Pages is
+#                                 not enabled there, so nothing runs.
+#
+# Authoring happens in iBlog-astro; publishing is a separate, deliberate step
+# (`npm run publish`, i.e. git push githubio main) so that unfinished work can
+# be pushed without going live. Do not enable Actions in iBlog-astro without
+# first deciding which repo owns the deploy — two builds would race onto the
+# same domain. See the "Publishing" section in AGENTS.md.
+
 name: Deploy to GitHub Pages
 
 on:
