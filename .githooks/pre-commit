@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Blog consistency checks. Fast: pure bash + git, no Python, no network.
+# Bypass with: SKIP_BLOG_CHECKS=1 git commit ...
+set -uo pipefail
+
+[ "${SKIP_BLOG_CHECKS:-}" = "1" ] && exit 0
+
+ZH_DIR="src/content/blog/zh"
+EN_DIR="src/content/blog/en"
+
+# Nothing to do unless this commit actually touches Chinese posts.
+staged_zh=$(git diff --cached --name-only --diff-filter=ACM | grep "^${ZH_DIR}/.*\.md$" || true)
+[ -z "$staged_zh" ] && exit 0
+
+staged_all=$(git diff --cached --name-only --diff-filter=ACM)
+errors=0
+warns=0
+
+while IFS= read -r zh; do
+  [ -z "$zh" ] && continue
+  base=$(basename "$zh")
+  fm=$(git show ":$zh" 2>/dev/null | sed -n '2,/^---$/p')
+
+  # path_name drives the URL slug; empty means the slug falls back to the
+  # (Chinese) filename. See src/utils/slug.ts.
+  pn=$(printf '%s\n' "$fm" | grep -m1 '^path_name:' | sed 's/^path_name:[[:space:]]*//' | tr -d "\"'[:space:]")
+  if [ -z "$pn" ]; then
+    echo "  ERROR  $base — path_name is empty; URL slug would fall back to the Chinese filename"
+    errors=1
+  fi
+
+  # English counterpart must exist and move together with the source.
+  en="${EN_DIR}/${base}"
+  if [ ! -f "$en" ]; then
+    echo "  ERROR  $base — no English translation at ${EN_DIR}/"
+    errors=1
+  elif ! printf '%s\n' "$staged_all" | grep -qxF "$en"; then
+    echo "  ERROR  $base — Chinese source changed but the English translation is not staged (stale)"
+    errors=1
+  fi
+
+  tags=$(printf '%s\n' "$fm" | grep -m1 '^tags:' | sed 's/^tags:[[:space:]]*//' | tr -d "[:space:]")
+  if [ -z "$tags" ] || [ "$tags" = "[]" ]; then
+    echo "  warn   $base — tags is empty; the post will not appear under /tags"
+    warns=1
+  fi
+done <<< "$staged_zh"
+
+if [ "$errors" = "1" ]; then
+  cat <<'MSG'
+
+Commit blocked. To refresh the English translations, run:
+
+    npm run translate
+
+then stage src/content/blog/en/ and commit again.
+Bypass these checks with:  SKIP_BLOG_CHECKS=1 git commit ...
+MSG
+  exit 1
+fi
+
+[ "$warns" = "1" ] && echo ""
+exit 0

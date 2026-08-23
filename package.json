@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "translate": "uv run --project tools/md_translator increment-trans src/content/blog/zh",
+    "excerpt": "uv run --project tools/md_translator summarize-excerpt",
+    "hooks:install": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.15",

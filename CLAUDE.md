@@ -80,6 +80,38 @@ tag: any                 # ignored (Hexo sometimes uses singular form)
 **Slug resolution** (`src/utils/slug.ts`): use `path_name` if present, else filename minus prefix/extension.
 All migrated zh posts already have `path_name` set to clean English slugs.
 
+## Translation Workflow
+
+English posts are generated from the Chinese source by `tools/md_translator`
+(git submodule). **Important timing constraint:** `increment-trans` finds work
+via `git diff` / `git diff --cached` / `git ls-files --others` — it reads the
+*working tree*, so it only sees **uncommitted** changes. Run it after writing
+the Chinese post and *before* committing; once committed, it finds nothing.
+
+```bash
+npm run translate        # sync src/content/blog/zh/ -> src/content/blog/en/
+npm run excerpt <file>   # fill an empty `excerpt` front matter field
+npm run hooks:install    # one-time per clone, see below
+```
+
+A `.githooks/pre-commit` hook guards the invariants. It is pure bash + git
+(no Python, no network, ~0.1s) and **exits immediately unless the commit
+stages a file under `src/content/blog/zh/`** — commits that only touch code
+are unaffected. When Chinese posts are staged it blocks on:
+
+- `path_name` empty → the URL slug would fall back to the Chinese filename
+- no English counterpart in `src/content/blog/en/`
+- English counterpart exists but is not staged alongside → stale translation
+
+and warns (non-blocking) on empty `tags`.
+
+Bypass with `SKIP_BLOG_CHECKS=1 git commit ...`.
+
+The hook lives in `.githooks/` (versioned) rather than `.git/hooks/`
+(not versioned, lost on re-clone). Each clone needs `npm run hooks:install`
+once. `.gitattributes` pins `.githooks/**` to LF because `core.autocrlf=true`
+would otherwise break the shebang under Git Bash.
+
 ## Current File Structure
 
 ```
