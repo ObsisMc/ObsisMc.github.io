@@ -1,1 +1,27 @@
-{"taxonomy":{"tags":["AI-native Coding","Computer Networking","Essay","Finance","Git","Misc","Python","计算机网络","随笔"],"categories":["AI-native Coding","Computer Networking","Computer Organization and Architecture","Finance","Git","Java","Misc","Python","计算机组成原理","计算机网络"]}}
+{
+  "taxonomy": {
+    "categories": [
+      "AI-native Coding",
+      "Computer Networking",
+      "Computer Organization and Architecture",
+      "Finance",
+      "Git",
+      "Java",
+      "Misc",
+      "Python",
+      "计算机组成原理",
+      "计算机网络"
+    ],
+    "tags": [
+      "AI-native Coding",
+      "Computer Networking",
+      "Essay",
+      "Finance",
+      "Git",
+      "Misc",
+      "Python",
+      "计算机网络",
+      "随笔"
+    ]
+  }
+}

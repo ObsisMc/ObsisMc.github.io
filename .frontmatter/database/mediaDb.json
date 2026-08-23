@@ -1,1 +1,15 @@
-{"data":{"gitrepo":{"iblog-astro":{"src":{"content":{"blog":{"zh":{}}}}}}}}
+{
+  "data": {
+    "gitrepo": {
+      "iblog-astro": {
+        "src": {
+          "content": {
+            "blog": {
+              "zh": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
