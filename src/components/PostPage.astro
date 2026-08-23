@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import Mermaid from './Mermaid.astro';
 import { getPostSlug } from '../utils/slug';
 import { getGitLastModified } from '../utils/lastModified';
 
@@ -69,6 +70,7 @@ const fmtDate = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, '/');
       <div class="prose-shiro prose prose-slate">
         <Content />
       </div>
+      <Mermaid />
 
       <!-- Tags -->
       {post.data.tags && post.data.tags.length > 0 && (

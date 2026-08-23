@@ -550,6 +550,34 @@
         border-radius: 0;
     }
 
+    /* mermaid diagrams — rendered client-side into the same <pre> */
+    .prose-shiro pre[data-mermaid] {
+        background: transparent;
+        color: inherit;
+        padding: 0.5em 0;
+        text-align: center;
+        line-height: normal;
+        overflow-x: auto;
+    }
+
+    .prose-shiro pre[data-mermaid][data-mermaid-state="pending"] {
+        visibility: hidden;
+    }
+
+    .prose-shiro pre[data-mermaid] svg {
+        display: inline-block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* if mermaid fails, fall back to showing the diagram source */
+    .prose-shiro pre[data-mermaid][data-mermaid-state="error"] {
+        background: rgba(148, 163, 184, 0.12);
+        text-align: left;
+        line-height: 1.7;
+        padding: 1.25em 1.5em;
+    }
+
     /* tables */
     .prose-shiro table {
         width: 100%;

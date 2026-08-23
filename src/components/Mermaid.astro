@@ -1,0 +1,73 @@
+---
+/**
+ * Renders `<pre class="mermaid">` blocks (emitted by `remark-mermaid`) in the
+ * browser. Mermaid itself is only fetched when the page actually has diagrams.
+ */
+---
+<noscript>
+  <style>pre[data-mermaid] { visibility: visible !important; }</style>
+</noscript>
+
+<script>
+  const blocks = Array.from(
+    document.querySelectorAll<HTMLElement>('pre[data-mermaid]')
+  );
+
+  if (blocks.length) {
+    const sources = new Map<HTMLElement, string>();
+    blocks.forEach(el => {
+      sources.set(el, el.textContent ?? '');
+      el.dataset.mermaidState = 'pending';
+    });
+
+    const isDark = () => document.documentElement.classList.contains('dark');
+
+    (async () => {
+      const mermaid = (await import('mermaid')).default;
+      const fontFamily = getComputedStyle(document.body).fontFamily;
+      let rendering = false;
+
+      const render = async () => {
+        if (rendering) return;
+        rendering = true;
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: isDark() ? 'dark' : 'neutral',
+          securityLevel: 'strict',
+          fontFamily,
+          flowchart: { useMaxWidth: true },
+        });
+        blocks.forEach(el => {
+          el.removeAttribute('data-processed');
+          el.textContent = sources.get(el) ?? '';
+          el.dataset.mermaidState = 'pending';
+        });
+        try {
+          await mermaid.run({ nodes: blocks, suppressErrors: true });
+        } catch (err) {
+          console.error('[mermaid] render failed', err);
+        }
+        blocks.forEach(el => {
+          el.dataset.mermaidState = el.querySelector('svg') ? 'ready' : 'error';
+        });
+        rendering = false;
+      };
+
+      await render();
+
+      // Re-render on dark-mode toggle so diagram colors follow the theme.
+      let theme = isDark();
+      new MutationObserver(() => {
+        if (theme === isDark()) return;
+        theme = isDark();
+        render();
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    })().catch(err => {
+      console.error('[mermaid] failed to load', err);
+      blocks.forEach(el => { el.dataset.mermaidState = 'error'; });
+    });
+  }
+</script>

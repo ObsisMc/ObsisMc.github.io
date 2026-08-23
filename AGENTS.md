@@ -176,6 +176,7 @@ the deploy — running both would race two builds onto the same domain.
 - **Image service: noop** — Astro's image optimizer is disabled (`astro/assets/services/noop`) because migrated posts use relative image paths that Astro can't resolve at build time. Post images are served from `public/`.
 - **Relative image paths fixed** — All `./FolderName/img` references in zh posts were rewritten to `/FolderName/img` (absolute) in the copies under `src/content/blog/zh/`. The originals in `../iBlog/` are untouched.
 - **Astro 5 content schema** — `passthrough()` does not reliably expose extra fields at runtime. Extra Hexo frontmatter fields must be explicitly declared in the schema (even as `z.any()`) to be accessible.
+- **Mermaid diagrams** — ```` ```mermaid ```` fences are rewritten by `src/plugins/remark-mermaid.mjs` into `<pre class="mermaid">` (so Shiki never highlights them) and rendered in the browser by `src/components/Mermaid.astro`. Mermaid is an npm dependency, dynamically imported only on pages that actually contain a diagram, and re-rendered on dark-mode toggle. If it fails, the block falls back to showing the diagram source.
 - **Cache issues** — Astro 5 aggressively caches the content store. When schema or slug logic changes, always delete `.astro/` and `dist/` before rebuilding.
 
 ## Implementation Phases

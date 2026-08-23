@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import Divider from './Divider.astro';
+import Mermaid from './Mermaid.astro';
 
 interface Props {
   lang: 'zh' | 'en';
@@ -61,6 +62,7 @@ const emptyText = lang === 'zh' ? '暂无随笔。' : 'No notes yet.';
           </div>
         ))}
       </div>
+      <Mermaid />
     </section>
   </main>
   <Footer />
