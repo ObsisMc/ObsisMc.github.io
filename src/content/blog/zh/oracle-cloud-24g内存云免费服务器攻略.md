@@ -5,7 +5,7 @@ date: 2026-04-06 13:16:44.427000+00:00
 draft: false
 excerpt: Oracle Cloud 提供永久免费的 ARM 云服务器，最高可享 4 核 24G 内存、200G 磁盘，且无需 VPN 即可连接。本文详解从账号注册、免费资源申请到网络配置的完整流程，并附上各项免费额度的具体范围，帮助你顺利薅到这份云计算福利。
 path_name: oracle-always-free-vps
-tags: []
+tags: [Cloud Computing, 服务器]
 title: Oracle Cloud 薅 永久24G内存云服务器攻略
 ---
 

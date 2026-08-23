@@ -5,7 +5,7 @@ date: 2026-04-06 13:16:44.427000+00:00
 draft: false
 excerpt: Oracle Cloud offers a permanently free ARM VPS with up to 4 cores, 24 GB RAM, and 200 GB disk — no VPN required. This guide walks you through account registration, claiming free resources, and network configuration, with a full breakdown of the Always Free tier limits.
 path_name: oracle-always-free-vps
-tags: []
+tags: [Cloud Computing, Server]
 title: Oracle Cloud Always Free 24 GB RAM VPS Guide
 ---
 
